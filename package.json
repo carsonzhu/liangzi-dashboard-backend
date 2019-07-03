@@ -1,0 +1,50 @@
+{
+  "name": "liangzi-dashboard-backend",
+  "version": "1.0.0",
+  "description": "liangzi-dashboard-backend",
+  "scripts": {
+    "start": "npm run prod",
+    "server": "babel-node ./src/index.js",
+    "server:prod": "node .dist/index.js",
+    "dev": "NODE_ENV=development npm-run-all server",
+    "clean": "rimraf .dist",
+    "build": "babel ./src --out-dir .dist",
+    "prod": "NODE_ENV=production npm-run-all clean build server:prod",
+    "watch": "nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/fintelics/liangzi-dashboard-backend"
+  },
+  "author": "Lucas Pan",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/runtime": "^7.4.4",
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.5.1",
+    "jwk-to-pem": "^2.0.1",
+    "moment": "^2.24.0",
+    "mongoose": "^5.6.2",
+    "npm-run-all": "^4.1.5",
+    "pino": "^5.12.0",
+    "pino-pretty": "^2.6.0",
+    "rimraf": "^2.6.3",
+    "uuid": "^3.3.2",
+    "validator": "^11.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@babel/node": "^7.2.2",
+    "@babel/plugin-transform-runtime": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "babel-eslint": "^8.2.6",
+    "eslint": "^4.19.1",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-prettier": "^2.6.0",
+    "nodemon": "^1.19.1",
+    "prettier": "^1.5.3"
+  }
+}

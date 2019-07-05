@@ -5,13 +5,12 @@ const MONGO_SALT = process.env.MONGO_SALT;
 
 const Schema = mongoose.Schema;
 
-// TODO: add validation
 const UserSchema = new Schema({
-  password: String,
   email: {
     type: String,
     index: { unique: true, sparse: true }
   },
+  password: String,
   userType: {
     type: String,
     enum: ["superAdmin", "normalAdmin"]

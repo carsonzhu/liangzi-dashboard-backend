@@ -1,6 +1,7 @@
 "use strict";
 
 import logger from "../../utilities/logger";
+import UserModel from "../../models/users";
 
 import {
   suspendUserFunc,
@@ -84,7 +85,7 @@ const createUser = async (req, res) => {
     }
 
     // Check if email exists
-    const user = await fetchSingleUserFunc({ email });
+    const user = await UserModel.findOne({ email });
     if (user) {
       return res.status(409).json({
         status: 409,

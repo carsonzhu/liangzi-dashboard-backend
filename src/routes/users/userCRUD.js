@@ -12,27 +12,42 @@ import {
 
 const getUsers = async (req, res) => {
   try {
-    const userId = req.params.userId;
+    const users = await fetchUsersFunc();
 
-    if (userId) {
-      const singleUser = await fetchSingleUserFunc({ userId });
+    return res.status(200).json({
+      status: 200,
+      data: {
+        users
+      }
+    });
+  } catch (err) {
+    logger.error(err);
 
-      return res.status(200).json({
-        status: 200,
-        data: {
-          singleUser
-        }
-      });
-    } else {
-      const users = await fetchUsersFunc();
-
-      return res.status(200).json({
-        status: 200,
-        data: {
-          users
-        }
+    if (err.status === 400) {
+      return res.status(400).json({
+        status: 400,
+        description: err.msg
       });
     }
+
+    res.status(500).json({
+      status: 500,
+      description: "Internal Error"
+    });
+  }
+};
+
+const getSingleUser = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const singleUser = await fetchSingleUserFunc({ userId });
+
+    return res.status(200).json({
+      status: 200,
+      data: {
+        singleUser
+      }
+    });
   } catch (err) {
     logger.error(err);
 
@@ -60,6 +75,22 @@ const createUser = async (req, res) => {
       allowedOperations,
       isActive
     } = req.body;
+
+    if (!email || !password || !userType || !username) {
+      return res.status(400).json({
+        status: 400,
+        description: "missing fields"
+      });
+    }
+
+    // Check if email exists
+    const user = await UserModel.findOne({ email });
+    if (user) {
+      return res.status(409).json({
+        status: 409,
+        description: "Email exists"
+      });
+    }
 
     const newUser = await addUserFunc({
       email,
@@ -176,4 +207,4 @@ const removeUser = async (req, res) => {
   }
 };
 
-export { createUser, getUsers, editUser, removeUser };
+export { createUser, getUsers, getSingleUser, editUser, removeUser };

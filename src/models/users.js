@@ -1,11 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import {
-  ACTIVE,
-  SUSPENDED,
-  SUPER_ADMIN,
-  NORMAL_ADMIN
-} from "../utilities/constants";
+import { SUPER_ADMIN, NORMAL_ADMIN } from "../utilities/constants";
 
 const MONGO_SALT = process.env.MONGO_SALT;
 
@@ -25,10 +20,7 @@ const UserSchema = new Schema({
   allowedOperations: [
     { type: String, enum: ["cars", "users", "insurances", "transactions"] }
   ],
-  isActive: {
-    type: String,
-    enum: [ACTIVE, SUSPENDED]
-  }
+  isActive: Boolean
 });
 
 UserSchema.methods.generateHash = function generateHash(value) {

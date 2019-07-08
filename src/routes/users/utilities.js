@@ -1,7 +1,6 @@
 "use strict";
 
 import UserModel from "../../models/users";
-import { SUSPENDED } from "../../utilities/constants";
 
 const fetchUsersFunc = () => {
   return UserModel.find().select({
@@ -15,7 +14,7 @@ const fetchUsersFunc = () => {
 };
 
 const fetchSingleUserFunc = ({ userId }) => {
-  return new Promise((resolve: 1, reject) => {
+  return new Promise((resolve, reject) => {
     UserModel.findOne({ _id: userId })
       .select({
         _id: 1,
@@ -32,7 +31,7 @@ const fetchSingleUserFunc = ({ userId }) => {
           return reject({ status: 400, msg: "invalid userId" });
         }
       })
-      .catch(err);
+      .catch(reject);
   });
 };
 
@@ -41,20 +40,15 @@ const addUserFunc = ({
   password = "",
   userType = "",
   username = "",
-  allowedOperations = [],
-  isActive = ""
+  allowedOperations = []
 }) => {
-  if (!email || !password || !userType || !isActive || !username) {
-    return Promise.reject({ status: 400, msg: "missing fields" });
-  }
-
   const newUser = new UserModel({
     email,
     password,
     userType,
     username,
     allowedOperations,
-    isActive
+    isActive: true
   });
 
   return new Promise((resolve, reject) => {
@@ -93,7 +87,7 @@ const suspendUserFunc = ({ userId }) => {
     UserModel.findOne({ userId })
       .then(userToSuspend => {
         if (userToSuspend) {
-          userToSuspend.isActive = SUSPENDED;
+          userToSuspend.isActive = false;
 
           return impressionResult.save();
         } else {

@@ -1,12 +1,24 @@
 "use strict";
 
 import express from "express";
+import mongoose from "../utilities/mongoose";
+// import mongoose from "mongoose";
 
-import { createUser, getUsers, editUser, removeUser } from "./users/userCRUD";
+import {
+  createUser,
+  getUsers,
+  getSingleUser,
+  editUser,
+  removeUser
+} from "./users/userCRUD";
 import { registerWithEmail } from "./authentication/email";
 import { login } from "./authentication/common";
 
 const router = express.Router();
+
+mongoose.connect(
+  process.env.ENV === "development" ? process.env.DEV_DB : process.env.PROD_DB
+);
 
 /***************************
  * Authentication APIs
@@ -29,8 +41,9 @@ router.post("/apis/authentication/login", login);
 /***************************
  * User APIs
  ***************************/
+router.get("/apis/users", getUsers);
+router.get("/apis/users/:userId", getSingleUser);
 router.post("/apis/users", createUser);
-router.get("/apis/users/:userId", getUsers);
 router.put("/apis/users", editUser);
 router.delete("/apis/users", removeUser);
 

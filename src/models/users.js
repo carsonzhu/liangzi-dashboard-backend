@@ -17,6 +17,7 @@ const UserSchema = new Schema({
     index: { unique: true, sparse: true }
   },
   password: String,
+  username: String,
   userType: {
     type: String,
     enum: [SUPER_ADMIN, NORMAL_ADMIN]

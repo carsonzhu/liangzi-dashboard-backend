@@ -52,12 +52,20 @@ const getUsers = async (req, res) => {
 
 const createUser = async (req, res) => {
   try {
-    const { email, password, userType, allowedOperations, isActive } = req.body;
+    const {
+      email,
+      password,
+      userType,
+      username,
+      allowedOperations,
+      isActive
+    } = req.body;
 
     const newUser = await addUserFunc({
       email,
       password,
       userType,
+      username,
       allowedOperations,
       isActive
     });
@@ -100,6 +108,7 @@ const editUser = async (req, res) => {
       "email",
       "password",
       "userType",
+      "username",
       "allowedOperations",
       "isActive"
     ];

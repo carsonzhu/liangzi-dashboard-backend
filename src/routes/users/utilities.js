@@ -4,12 +4,27 @@ import UserModel from "../../models/users";
 import { SUSPENDED } from "../../utilities/constants";
 
 const fetchUsersFunc = () => {
-  return UserModel.find();
+  return UserModel.find().select({
+    _id: 1,
+    email: 1,
+    username: 1,
+    userType: 1,
+    allowedOperations: 1,
+    isActive: 1
+  });
 };
 
 const fetchSingleUserFunc = ({ userId }) => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve: 1, reject) => {
     UserModel.findOne({ _id: userId })
+      .select({
+        _id: 1,
+        email: 1,
+        username: 1,
+        userType: 1,
+        allowedOperations: 1,
+        isActive: 1
+      })
       .then(singleUser => {
         if (singleUser) {
           return resolve(singleUser);
@@ -25,10 +40,11 @@ const addUserFunc = ({
   email = "",
   password = "",
   userType = "",
+  username = "",
   allowedOperations = [],
   isActive = ""
 }) => {
-  if (!email || !password || !userType || !isActive) {
+  if (!email || !password || !userType || !isActive || !username) {
     return Promise.reject({ status: 400, msg: "missing fields" });
   }
 
@@ -36,6 +52,7 @@ const addUserFunc = ({
     email,
     password,
     userType,
+    username,
     allowedOperations,
     isActive
   });

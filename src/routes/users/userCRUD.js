@@ -4,7 +4,6 @@ import logger from "../../utilities/logger";
 import UserModel from "../../models/users";
 
 import {
-  suspendUserFunc,
   fetchSingleUserFunc,
   fetchUsersFunc,
   addUserFunc,
@@ -180,14 +179,14 @@ const editUser = async (req, res) => {
 
 const removeUser = async (req, res) => {
   try {
-    const userId = req.userId;
+    const { userId } = req.body;
 
-    const removedUser = await suspendUserFunc({ userId });
+    await updateUserFunc({ userId, fieldToUpdate: { isActive: false } });
 
     return res.status(200).json({
       status: 200,
       data: {
-        removedUser
+        msg: "Disable Successfully!"
       }
     });
   } catch (err) {

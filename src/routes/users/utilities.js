@@ -2,28 +2,23 @@
 
 import UserModel from "../../models/users";
 
+const SELECTED_FIELDS = {
+  _id: 1,
+  email: 1,
+  username: 1,
+  userType: 1,
+  allowedOperations: 1,
+  isActive: 1
+};
+
 const fetchUsersFunc = () => {
-  return UserModel.find().select({
-    _id: 1,
-    email: 1,
-    username: 1,
-    userType: 1,
-    allowedOperations: 1,
-    isActive: 1
-  });
+  return UserModel.find().select(SELECTED_FIELDS);
 };
 
 const fetchSingleUserFunc = query => {
   return new Promise((resolve, reject) => {
     UserModel.findOne(query)
-      .select({
-        _id: 1,
-        email: 1,
-        username: 1,
-        userType: 1,
-        allowedOperations: 1,
-        isActive: 1
-      })
+      .select(SELECTED_FIELDS)
       .then(singleUser => {
         if (singleUser) {
           return resolve(singleUser);
@@ -65,40 +60,17 @@ const addUserFunc = ({
 
 const updateUserFunc = ({ userId, fieldToUpdate }) => {
   return new Promise((resolve, reject) => {
-    UserModel.find({ userId })
+    UserModel.findOne({ _id: userId })
       .then(user => {
         if (!user) {
           return reject({ status: 400, msg: "invalid userId" });
         }
 
-        return UserModel.update({ _id: userId }, fieldToUpdate);
+        return UserModel.updateOne({ _id: userId }, fieldToUpdate);
       })
       .then(resolve)
       .catch(reject);
   });
 };
 
-const suspendUserFunc = ({ userId }) => {
-  return new Promise((resolve, reject) => {
-    UserModel.findOne({ userId })
-      .then(userToSuspend => {
-        if (userToSuspend) {
-          userToSuspend.isActive = false;
-
-          return impressionResult.save();
-        } else {
-          return reject({ status: 400, msg: "invalid userId" });
-        }
-      })
-      .then(resolve)
-      .catch(reject);
-  });
-};
-
-export {
-  fetchUsersFunc,
-  fetchSingleUserFunc,
-  addUserFunc,
-  updateUserFunc,
-  suspendUserFunc
-};
+export { fetchUsersFunc, fetchSingleUserFunc, addUserFunc, updateUserFunc };

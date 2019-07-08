@@ -1,6 +1,7 @@
 "use strict";
 
 import express from "express";
+import { createUser, getUsers, editUser, removeUser } from "./users/userCRUD";
 
 const router = express.Router();
 
@@ -30,9 +31,10 @@ router.post(
 /***************************
  * User APIs
  ***************************/
-router.post("/apis/users", () => {});
-router.get("/apis/users", () => {});
-router.put("/apis/users", () => {});
+router.post("/apis/users", createUser);
+router.get("/apis/users/:userId", getUsers);
+router.put("/apis/users", editUser);
+router.delete("/apis/users", removeUser);
 
 router.all("*", function(req, res) {
   res.status(404).json({

@@ -13,9 +13,9 @@ const fetchUsersFunc = () => {
   });
 };
 
-const fetchSingleUserFunc = ({ userId }) => {
+const fetchSingleUserFunc = query => {
   return new Promise((resolve, reject) => {
-    UserModel.findOne({ _id: userId })
+    UserModel.findOne(query)
       .select({
         _id: 1,
         email: 1,

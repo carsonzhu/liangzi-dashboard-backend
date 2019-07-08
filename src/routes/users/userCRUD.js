@@ -40,7 +40,7 @@ const getUsers = async (req, res) => {
 const getSingleUser = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const singleUser = await fetchSingleUserFunc({ userId });
+    const singleUser = await fetchSingleUserFunc({ _id: userId });
 
     return res.status(200).json({
       status: 200,
@@ -84,7 +84,7 @@ const createUser = async (req, res) => {
     }
 
     // Check if email exists
-    const user = await UserModel.findOne({ email });
+    const user = await fetchSingleUserFunc({ email });
     if (user) {
       return res.status(409).json({
         status: 409,

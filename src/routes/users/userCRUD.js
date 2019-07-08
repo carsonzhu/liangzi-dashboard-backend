@@ -138,15 +138,14 @@ const editUser = async (req, res) => {
 
     const userFields = [
       "email",
-      "password",
       "userType",
       "username",
       "allowedOperations",
       "isActive"
     ];
 
-    for (key in fieldToUpdate) {
-      if (userFields.indexOf(userFields) === -1) {
+    for (let key in fieldToUpdate) {
+      if (userFields.indexOf(key) === -1) {
         return res.status(400).json({
           status: 400,
           description: "invalid/ non-existing field(s)"
@@ -154,12 +153,12 @@ const editUser = async (req, res) => {
       }
     }
 
-    const updatedUser = await updateUserFunc({ userId, fieldToUpdate });
+    await updateUserFunc({ userId, fieldToUpdate });
 
     return res.status(200).json({
       status: 200,
       data: {
-        updatedUser
+        msg: "Update Successfully!"
       }
     });
   } catch (err) {

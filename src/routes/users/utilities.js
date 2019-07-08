@@ -71,11 +71,7 @@ const updateUserFunc = ({ userId, fieldToUpdate }) => {
           return reject({ status: 400, msg: "invalid userId" });
         }
 
-        user = { ...user, ...fieldToUpdate };
-
-        const updateduser = new UserModel(user);
-
-        return updateduser.save();
+        return UserModel.update({ _id: userId }, fieldToUpdate);
       })
       .then(resolve)
       .catch(reject);

@@ -1,7 +1,7 @@
 "user strict";
 
 import VerificationCodeModel from "../../models/verificationCode";
-import UserModel from "../../models/user";
+import UserModel from "../../models/users";
 import logger from "../../utilities/logger";
 import jwt from "jsonwebtoken";
 import shortid from "shortid";

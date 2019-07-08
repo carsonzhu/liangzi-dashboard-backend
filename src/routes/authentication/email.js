@@ -1,5 +1,5 @@
 "use strict";
-import UserModel from "../../models/user";
+import UserModel from "../../models/users";
 import VerificationCodeModel from "../../models/verificationCode";
 import shortid from "shortid";
 import logger from "../../utilities/logger";

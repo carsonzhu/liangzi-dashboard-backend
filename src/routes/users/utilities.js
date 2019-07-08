@@ -1,6 +1,6 @@
 "use strict";
 
-import UserModel from "../../models/user";
+import UserModel from "../../models/users";
 import { SUSPENDED } from "../../utilities/constants";
 
 const fetchUsersFunc = () => {

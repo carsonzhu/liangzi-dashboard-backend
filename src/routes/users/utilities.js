@@ -21,9 +21,55 @@ const fetchSingleUser = ({ userId }) => {
   });
 };
 
-const createUser = ({}) => {};
+const addUser = ({
+  email = "",
+  password = "",
+  userType = "",
+  allowedOperations = [],
+  isActive = ""
+}) => {
+  if (!email || !password || !userType || !isActive) {
+    return Promise.reject({ status: 400, msg: "missing fields" });
+  }
 
-const editUser = ({ userId, fieldToUpdate }) => {};
+  const newUser = new UserModel({
+    email,
+    password,
+    userType,
+    allowedOperations,
+    isActive
+  });
+
+  return new Promise((resolve, reject) => {
+    newUser
+      .generateHash(password)
+      .then(hashedPassword => {
+        newUser.password = hashedPassword;
+        return newUser.save();
+      })
+      .then(resolve)
+      .catch(reject);
+  });
+};
+
+const updateUser = ({ userId, fieldToUpdate }) => {
+  return new Promise((resolve, reject) => {
+    UserModel.find({ userId })
+      .then(user => {
+        if (!user) {
+          return reject({ status: 400, msg: "invalid userId" });
+        }
+
+        user = { ...user, ...fieldToUpdate };
+
+        const updateduser = new UserModel(user);
+
+        return updateduser.save();
+      })
+      .then(resolve)
+      .catch(reject);
+  });
+};
 
 const suspendUser = ({ userId }) => {
   return new Promise((resolve, reject) => {
@@ -42,4 +88,4 @@ const suspendUser = ({ userId }) => {
   });
 };
 
-export { fetchUsers, fetchSingleUser, createUser, editUser, suspendUser };
+export { fetchUsers, fetchSingleUser, addUser, updateUser, suspendUser };

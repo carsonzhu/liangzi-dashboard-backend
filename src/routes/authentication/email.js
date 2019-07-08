@@ -7,11 +7,7 @@ import { sendEmail } from "../../utilities/nodemailer";
 
 const registerWithEmail = async (req, res) => {
   try {
-    const {
-      email,
-      verificationCode: verificationCode,
-      password: password
-    } = req.body;
+    const { email, verificationCode, password } = req.body;
 
     if (!email) {
       return res.status(400).json({

@@ -3,11 +3,11 @@
 import UserModel from "../../models/user";
 import { SUSPENDED } from "../../utilities/constants";
 
-const fetchUsers = () => {
+const fetchUsersFunc = () => {
   return UserModel.find();
 };
 
-const fetchSingleUser = ({ userId }) => {
+const fetchSingleUserFunc = ({ userId }) => {
   return new Promise((resolve, reject) => {
     UserModel.findOne({ _id: userId })
       .then(singleUser => {
@@ -21,7 +21,7 @@ const fetchSingleUser = ({ userId }) => {
   });
 };
 
-const addUser = ({
+const addUserFunc = ({
   email = "",
   password = "",
   userType = "",
@@ -52,7 +52,7 @@ const addUser = ({
   });
 };
 
-const updateUser = ({ userId, fieldToUpdate }) => {
+const updateUserFunc = ({ userId, fieldToUpdate }) => {
   return new Promise((resolve, reject) => {
     UserModel.find({ userId })
       .then(user => {
@@ -71,7 +71,7 @@ const updateUser = ({ userId, fieldToUpdate }) => {
   });
 };
 
-const suspendUser = ({ userId }) => {
+const suspendUserFunc = ({ userId }) => {
   return new Promise((resolve, reject) => {
     UserModel.findOne({ userId })
       .then(userToSuspend => {
@@ -88,4 +88,10 @@ const suspendUser = ({ userId }) => {
   });
 };
 
-export { fetchUsers, fetchSingleUser, addUser, updateUser, suspendUser };
+export {
+  fetchUsersFunc,
+  fetchSingleUserFunc,
+  addUserFunc,
+  updateUserFunc,
+  suspendUserFunc
+};

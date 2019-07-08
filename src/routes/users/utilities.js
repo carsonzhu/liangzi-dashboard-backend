@@ -12,9 +12,9 @@ const fetchSingleUserFunc = ({ userId }) => {
     UserModel.findOne({ _id: userId })
       .then(singleUser => {
         if (singleUser) {
-          resolve(singleUser);
+          return resolve(singleUser);
         } else {
-          reject({ status: 400, msg: "invalid userId" });
+          return reject({ status: 400, msg: "invalid userId" });
         }
       })
       .catch(err);
@@ -80,7 +80,7 @@ const suspendUserFunc = ({ userId }) => {
 
           return impressionResult.save();
         } else {
-          reject({ status: 400, msg: "invalid userId" });
+          return reject({ status: 400, msg: "invalid userId" });
         }
       })
       .then(resolve)

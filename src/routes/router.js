@@ -1,32 +1,30 @@
 "use strict";
 
 import express from "express";
+
 import { createUser, getUsers, editUser, removeUser } from "./users/userCRUD";
+import { registerWithEmail } from "./authentication/email";
+import { login } from "./authentication/common";
 
 const router = express.Router();
 
 /***************************
  * Authentication APIs
  ***************************/
-router.post(
-  "/apis/authentication/register/email/verificationCode",
-  getEmailVerificationCode
-);
+// router.post(
+//   "/apis/authentication/register/email/verificationCode",
+//   getEmailVerificationCode
+// );
+// router.post(
+//   "/apis/authentication/getForgetPasswordVerificationCode",
+//   getForgetPasswordVerificationCode
+// );
+// router.post(
+//   "/apis/authentication/changePasswordWithCode",
+//   changePasswordWithCode
+// );
 router.post("/apis/authentication/register/email", registerWithEmail);
-router.post(
-  "/apis/authentication/register/phone/verificationCode",
-  getPhoneVerificationCode
-);
-router.post("/apis/authentication/register/phone", registerWithPhone);
 router.post("/apis/authentication/login", login);
-router.post(
-  "/apis/authentication/getForgetPasswordVerificationCode",
-  getForgetPasswordVerificationCode
-);
-router.post(
-  "/apis/authentication/changePasswordWithCode",
-  changePasswordWithCode
-);
 
 /***************************
  * User APIs

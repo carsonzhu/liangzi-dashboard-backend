@@ -1,5 +1,5 @@
 "use strict";
-import UserModel from "../../models/user";
+import UserModel from "../../models/users";
 import VerificationCodeModel from "../../models/verificationCode";
 import shortid from "shortid";
 import logger from "../../utilities/logger";
@@ -7,11 +7,7 @@ import { sendEmail } from "../../utilities/nodemailer";
 
 const registerWithEmail = async (req, res) => {
   try {
-    const {
-      email,
-      verificationCode: verificationCode,
-      password: password
-    } = req.body;
+    const { email, verificationCode, password } = req.body;
 
     if (!email) {
       return res.status(400).json({
@@ -47,6 +43,7 @@ const registerWithEmail = async (req, res) => {
     let existingVerificationCode = await VerificationCodeModel.findOne({
       email
     });
+
     if (!existingVerificationCode) {
       return res.status(400).json({
         status: 400,
@@ -61,12 +58,13 @@ const registerWithEmail = async (req, res) => {
 
     const userModel = new UserModel({
       email,
-      password: password
+      password
     });
 
     userModel.password = await userModel.generateHash(password);
     const newUser = await userModel.save();
     await existingVerificationCode.remove();
+
     return res.status(200).json({
       status: 200,
       userId: newUser._id

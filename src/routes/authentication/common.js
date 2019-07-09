@@ -1,7 +1,7 @@
 "user strict";
 
 import VerificationCodeModel from "../../models/verificationCode";
-import UserModel from "../../models/user";
+import UserModel from "../../models/users";
 import logger from "../../utilities/logger";
 import jwt from "jsonwebtoken";
 import shortid from "shortid";
@@ -39,7 +39,7 @@ const login = async (req, res) => {
       });
     }
 
-    let token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRE_HOURS // expires in 24 hours
     });
 
@@ -51,7 +51,7 @@ const login = async (req, res) => {
 
     return res.status(200).send({
       status: 200,
-      token: token,
+      token,
       userInfo
     });
   } catch (err) {

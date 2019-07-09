@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import { SUPER_ADMIN, NORMAL_ADMIN } from "../utilities/constants";
 
 const MONGO_SALT = process.env.MONGO_SALT;
 
@@ -11,13 +12,15 @@ const UserSchema = new Schema({
     index: { unique: true, sparse: true }
   },
   password: String,
+  username: String,
   userType: {
     type: String,
-    enum: ["superAdmin", "normalAdmin"]
+    enum: [SUPER_ADMIN, NORMAL_ADMIN]
   },
   allowedOperations: [
     { type: String, enum: ["cars", "users", "insurances", "transactions"] }
-  ]
+  ],
+  isActive: Boolean
 });
 
 UserSchema.methods.generateHash = function generateHash(value) {

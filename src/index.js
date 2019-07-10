@@ -1,6 +1,7 @@
 "use strict";
 
 import express from "express";
+import cors from "cors";
 import bodyParser from "body-parser";
 import _ from "./utilities/env";
 import routes from "./routes/router";
@@ -12,6 +13,7 @@ import {
 
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
@@ -19,7 +21,7 @@ app.use(
   })
 );
 
-app.use(authentication);
+app.use(authenticationForLocalTesting);
 
 app.use(routes);
 

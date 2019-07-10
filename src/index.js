@@ -21,7 +21,7 @@ app.use(
   })
 );
 
-app.use(authenticationForLocalTesting);
+app.use(authentication);
 
 app.use(routes);
 

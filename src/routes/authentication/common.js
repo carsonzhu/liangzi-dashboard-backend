@@ -40,7 +40,7 @@ const login = async (req, res) => {
       });
     }
 
-    if (!!userModel && userModel.isActive) {
+    if (!!userModel && !userModel.isActive) {
       return res.status(400).send({
         status: 400,
         message: "The user is suspended"

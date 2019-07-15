@@ -8,6 +8,8 @@ import {
   removeVehicleAsync
 } from "./utilities";
 
+import { UNAVAILABLE } from "../../utilities/constants";
+
 export const getVehicles = async (req, res) => {
   try {
     const result = await getVehiclesAsync();
@@ -67,7 +69,7 @@ export const getSingleVehicle = async (req, res) => {
 export const addVehicle = async (req, res) => {
   try {
     //TODO
-    const result = await getVehiclesAsync();
+    const result = await addVehicleAsync({});
 
     return res.status(200).json({
       status: 200,
@@ -94,13 +96,18 @@ export const addVehicle = async (req, res) => {
 
 export const updateVehicle = async (req, res) => {
   try {
+    const { vehicleId } = req.body;
+
     //TODO
-    const result = await getVehiclesAsync();
+    await updateVehicleAsync({
+      vehicleId,
+      fieldToUpdate: { vehicleStatus: UNAVAILABLE } //TODO: fields
+    });
 
     return res.status(200).json({
       status: 200,
       data: {
-        result
+        msg: "Update Successfully!"
       }
     });
   } catch (err) {
@@ -122,13 +129,18 @@ export const updateVehicle = async (req, res) => {
 
 export const removeVehicle = async (req, res) => {
   try {
-    //TODO
-    const result = await getVehiclesAsync();
+    const { vehicleId } = req.body;
+
+    await updateVehicleAsync({
+      vehicleId,
+      fieldToUpdate: { vehicleStatus: UNAVAILABLE }
+    });
+    //dev only: await removeVehicleAsync({ vehicleId })
 
     return res.status(200).json({
       status: 200,
       data: {
-        result
+        msg: "Disable Successfully!"
       }
     });
   } catch (err) {

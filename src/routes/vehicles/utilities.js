@@ -95,6 +95,22 @@ export const getSingleVehicleAsync = async ({ vehicleId }) => {
 
 export const addVehicleAsync = ({}) => {};
 
-export const updateVehicleAsync = ({ vehicleId, fieldToUpdate }) => {};
+export const updateVehicleAsync = ({ vehicleId, fieldToUpdate }) => {
+  return new Promise((resolve, reject) => {
+    VehicleModel.findOne({ _id: vehicleId })
+      .then(vehicle => {
+        if (!vehicle) {
+          return reject({ status: 400, msg: "invalid vehicleId" });
+        }
 
-export const removeVehicleAsync = ({ vehicleId }) => {};
+        return VehicleModel.updateOne({ _id: vehicleId }, fieldToUpdate);
+      })
+      .then(resolve)
+      .catch(reject);
+  });
+};
+
+//DEV: For data cleanup only
+export const removeVehicleAsync = ({ vehicleId }) => {
+  return VehicleModel.deleteOne({ _id: vehicleId });
+};

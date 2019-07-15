@@ -36,7 +36,6 @@ export const vehicleDataTransform = ({
   insurance
 }) => {
   const {
-    //data to reuse
     specialServices,
     dailyRate,
     dailyRateUnit,

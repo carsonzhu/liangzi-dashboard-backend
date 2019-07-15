@@ -9,7 +9,15 @@ import {
   getSingleUser,
   editUser,
   removeUser
-} from "./users/userCRUD";
+} from "./admins/userCRUD";
+import {
+  getSingleVehicle,
+  getVehicles,
+  addVehicle,
+  updateVehicle,
+  removeVehicle
+} from "./vehicles/vehiclesCRUD";
+
 import { registerWithEmail } from "./authentication/email";
 import { login } from "./authentication/common";
 
@@ -36,18 +44,25 @@ router.post("/apis/authentication/register/email", registerWithEmail);
 router.post("/apis/authentication/login", login);
 
 /***************************
- * User APIs
+ * Admin APIs
  ***************************/
 //middleware (authentication) => check if the user can access the api
-//ie. router.get("/apis/users", authentication, getUsers);
-
-//change "users" => "admins" to avoid confusion
+//ie. router.get("/apis/admins", authentication, getUsers);
 
 router.get("/apis/admins", getUsers);
 router.get("/apis/admins/:userId", getSingleUser);
 router.post("/apis/admins", createUser);
 router.put("/apis/admins", editUser);
 router.delete("/apis/admins", removeUser);
+
+/***************************
+ * Vehicle APIs
+ ***************************/
+router.get("/apis/vehicles", getVehicles);
+router.get("/apis/vehicles/:vehicleId", getSingleVehicle);
+router.post("/apis/vehicles", addVehicle);
+router.put("/apis/vehicles", updateVehicle);
+router.delete("/apis/vehicles", removeVehicle);
 
 router.all("*", function(req, res) {
   res.status(404).json({

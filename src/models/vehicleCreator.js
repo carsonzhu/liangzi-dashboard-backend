@@ -1,23 +1,18 @@
-import mongoose from "mongoose";
-import { SUPER_ADMIN, NORMAL_ADMIN } from "../utilities/constants";
-
-const Schema = mongoose.Schema;
+import mongoose, { Schema } from "mongoose";
 
 const vehicleCreatorSchema = new Schema({
-  email: {
-    type: String,
-    index: { unique: true, sparse: true }
+  adminId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "admins"
   },
-  password: String,
-  username: String,
-  userType: {
-    type: String,
-    enum: [SUPER_ADMIN, NORMAL_ADMIN]
-  },
-  allowedOperations: [
-    { type: String, enum: ["cars", "users", "insurances", "transactions"] }
-  ],
-  isActive: Boolean
+  vehicleId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "vehicles"
+  }
 });
 
-export default mongoose.model("User", vehicleCreatorSchema);
+const myDB = mongoose.connection.useDb(process.env.WEB_BACKEND_DB);
+
+export default myDB.model("vehicle_creators", vehicleCreatorSchema);

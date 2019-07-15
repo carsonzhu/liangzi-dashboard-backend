@@ -1,8 +1,8 @@
 "use strict";
 
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const VerificationCodeSchema = new mongoose.Schema({
+const VerificationCodeSchema = new Schema({
   code: {
     type: String,
     required: true
@@ -15,4 +15,8 @@ const VerificationCodeSchema = new mongoose.Schema({
 
 VerificationCodeSchema.index({ unique: true, sparse: true });
 
-export default mongoose.model("VerificationCode", VerificationCodeSchema);
+const myDB = mongoose.connection.useDb(
+  process.env.ENV === "development" ? process.env.DEV_DB : process.env.PROD_DB
+);
+
+export default myDB.model("VerificationCode", VerificationCodeSchema);

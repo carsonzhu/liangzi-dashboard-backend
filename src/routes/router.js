@@ -2,7 +2,6 @@
 
 import express from "express";
 import mongoose from "../utilities/mongoose";
-// import mongoose from "mongoose";
 
 import {
   createUser,
@@ -16,9 +15,7 @@ import { login } from "./authentication/common";
 
 const router = express.Router();
 
-mongoose.connect(
-  process.env.ENV === "development" ? process.env.DEV_DB : process.env.PROD_DB
-);
+mongoose.connect(process.env.DB_CONNNECTION_STRING);
 
 /***************************
  * Authentication APIs
@@ -41,11 +38,16 @@ router.post("/apis/authentication/login", login);
 /***************************
  * User APIs
  ***************************/
-router.get("/apis/users", getUsers);
-router.get("/apis/users/:userId", getSingleUser);
-router.post("/apis/users", createUser);
-router.put("/apis/users", editUser);
-router.delete("/apis/users", removeUser);
+//middleware (authentication) => check if the user can access the api
+//ie. router.get("/apis/users", authentication, getUsers);
+
+//change "users" => "admins" to avoid confusion
+
+router.get("/apis/admins", getUsers);
+router.get("/apis/admins/:userId", getSingleUser);
+router.post("/apis/admins", createUser);
+router.put("/apis/admins", editUser);
+router.delete("/apis/admins", removeUser);
 
 router.all("*", function(req, res) {
   res.status(404).json({

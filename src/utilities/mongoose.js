@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import Mongoose from "mongoose/Mongoose";
 mongoose.set("useCreateIndex", true);
 mongoose.set("useNewUrlParser", true);
 mongoose.set("useFindAndModify", false);
 
-export default mongoose;
+export default Mongoose;

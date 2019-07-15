@@ -1,10 +1,8 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "../utilities/mongoose";
 import bcrypt from "bcrypt";
 import { SUPER_ADMIN, NORMAL_ADMIN } from "../utilities/constants";
 
 const MONGO_SALT = process.env.MONGO_SALT;
-
-const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
   email: {
@@ -31,4 +29,8 @@ UserSchema.methods.validPassword = function validPassword(password) {
   return bcrypt.compare(password, this.password);
 };
 
-export default mongoose.model("User", UserSchema);
+const myDB = mongoose.connection.useDb(
+  process.env.ENV === "development" ? process.env.DEV_DB : process.env.PROD_DB
+);
+
+export default myDB.model("admins", UserSchema);

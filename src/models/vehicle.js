@@ -1,6 +1,6 @@
 "use strict";
 
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import {
   AUTOMATIC,
   MANUAL,
@@ -10,7 +10,7 @@ import {
 } from "../utilities/constants";
 import { validateUrl, localeObjectValidation } from "../utilities/validations";
 
-const VehicleSchema = new mongoose.Schema({
+const VehicleSchema = new Schema({
   dailyRateDisplay: {
     type: Number,
     required: true
@@ -78,4 +78,6 @@ const VehicleSchema = new mongoose.Schema({
   }
 });
 
-export default mongoose.model("vehicles", VehicleSchema);
+const myDB = mongoose.connection.useDb(process.env.WEB_BACKEND_DB);
+
+export default myDB.model("vehicles", VehicleSchema);

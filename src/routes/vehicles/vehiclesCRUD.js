@@ -5,7 +5,8 @@ import {
   getVehiclesAsync,
   addVehicleAsync,
   updateVehicleAsync,
-  removeVehicleAsync
+  removeVehicleAsync,
+  advancedVehicleQuery
 } from "./utilities";
 
 import { UNAVAILABLE } from "../../utilities/constants";
@@ -38,30 +39,36 @@ export const getVehicles = async (req, res) => {
 };
 
 export const getSingleVehicle = async (req, res) => {
-  try {
-    const vehicleId = req.params.vehicleId;
+  logger.info({ url: req.url }, "receive request");
 
-    const vehile = await getSingleVehicleAsync({ vehicleId });
+  const { vehicleId = null, language = null } = req.params;
+
+  if (!language) {
+    return res.status(400).json({
+      status: 400,
+      error: "Language is required"
+    });
+  }
+
+  if (!vehicleId) {
+    return res.status(400).json({
+      status: 400,
+      error: "VehicleId is required"
+    });
+  }
+
+  try {
+    // const vehicle = await getSingleVehicleAsync({ vehicleId });
+    const vehicles = await advancedVehicleQuery({ vehicleId, language });
 
     return res.status(200).json({
       status: 200,
-      data: {
-        result: vehile
-      }
+      result: vehicles
     });
   } catch (err) {
-    logger.error(err);
-
-    if (err.status === 400) {
-      return res.status(400).json({
-        status: 400,
-        description: err.msg
-      });
-    }
-
-    res.status(500).json({
+    return res.status(500).json({
       status: 500,
-      description: "Internal Error"
+      err
     });
   }
 };

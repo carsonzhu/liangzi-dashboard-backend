@@ -59,7 +59,7 @@ router.delete("/apis/admins", removeUser);
  * Vehicle APIs
  ***************************/
 router.get("/apis/vehicles", getVehicles);
-router.get("/apis/vehicles/:vehicleId", getSingleVehicle);
+router.get("/apis/vehicles/:vehicleId/:language", getSingleVehicle);
 router.post("/apis/vehicles", addVehicle);
 router.put("/apis/vehicles", updateVehicle);
 router.delete("/apis/vehicles", removeVehicle);

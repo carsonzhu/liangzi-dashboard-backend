@@ -1,6 +1,6 @@
 "use strict";
 
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 import {
   AUTOMATIC,
   MANUAL,
@@ -9,6 +9,8 @@ import {
   RENTED
 } from "../utilities/constants";
 import { validateUrl, localeObjectValidation } from "../utilities/validations";
+
+const Schema = mongoose.Schema;
 
 const VehicleSchema = new Schema({
   dailyRateDisplay: {

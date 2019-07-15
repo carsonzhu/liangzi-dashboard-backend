@@ -1,8 +1,10 @@
-import mongoose, { Schema } from "../utilities/mongoose";
+import mongoose from "../utilities/mongoose";
 import bcrypt from "bcrypt";
 import { SUPER_ADMIN, NORMAL_ADMIN } from "../utilities/constants";
 
 const MONGO_SALT = process.env.MONGO_SALT;
+
+const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
   email: {

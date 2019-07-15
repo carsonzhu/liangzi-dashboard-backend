@@ -1,7 +1,9 @@
 "use strict";
 
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 import { localeObjectValidation } from "../utilities/validations";
+
+const Schema = mongoose.Schema;
 
 const VehicleTypeSchema = new Schema({
   type: {

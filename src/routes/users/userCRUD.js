@@ -1,7 +1,7 @@
 "use strict";
 
 import logger from "../../utilities/logger";
-import UserModel from "../../models/users";
+import UserModel from "../../models/admin";
 
 import {
   fetchSingleUserFunc,

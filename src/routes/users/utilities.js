@@ -1,6 +1,6 @@
 "use strict";
 
-import UserModel from "../../models/users";
+import UserModel from "../../models/admin";
 
 const SELECTED_FIELDS = {
   _id: 1,

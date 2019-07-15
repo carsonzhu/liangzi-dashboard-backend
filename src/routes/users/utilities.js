@@ -73,4 +73,15 @@ const updateUserFunc = ({ userId, fieldToUpdate }) => {
   });
 };
 
-export { fetchUsersFunc, fetchSingleUserFunc, addUserFunc, updateUserFunc };
+// For data cleanup only
+const deleteUserFunc = ({ userId }) => {
+  return UserModel.deleteOne({ _id: userId });
+};
+
+export {
+  fetchUsersFunc,
+  fetchSingleUserFunc,
+  addUserFunc,
+  updateUserFunc,
+  deleteUserFunc
+};

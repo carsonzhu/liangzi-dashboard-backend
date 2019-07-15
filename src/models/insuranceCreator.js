@@ -1,15 +1,15 @@
 import mongoose, { Schema } from "mongoose";
 
-const vehicleCreatorSchema = new Schema({
+const insuranceCreatorSchema = new Schema({
   adminId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: "admins"
   },
-  vehicleId: {
+  insuranceId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: "vehicles"
+    ref: "insurances"
   }
 });
 
@@ -17,4 +17,4 @@ const myDB = mongoose.connection.useDb(
   process.env.ENV === "development" ? process.env.DEV_DB : process.env.PROD_DB
 );
 
-export default myDB.model("vehicle_creators", vehicleCreatorSchema);
+export default myDB.model("insurance_creators", insuranceCreatorSchema);

@@ -1,23 +1,34 @@
 "use strict";
 
 import logger from "../../utilities/logger";
-import UserModel from "../../models/users";
+import UserModel from "../../models/admin";
 
 import {
   fetchSingleUserFunc,
   fetchUsersFunc,
   addUserFunc,
-  updateUserFunc
+  updateUserFunc,
+  deleteUserFunc
 } from "./utilities";
 
 const getUsers = async (req, res) => {
   try {
+    const dataTransform = data => {
+      data.forEach(user => {
+        user["userId"] = user._id;
+
+        delete user._id;
+      });
+
+      return data;
+    };
+
     const users = await fetchUsersFunc();
 
     return res.status(200).json({
       status: 200,
       data: {
-        users
+        users: dataTransform(users)
       }
     });
   } catch (err) {
@@ -67,14 +78,7 @@ const getSingleUser = async (req, res) => {
 
 const createUser = async (req, res) => {
   try {
-    const {
-      email,
-      password,
-      userType,
-      username,
-      allowedOperations,
-      isActive
-    } = req.body;
+    const { email, password, userType, username, allowedOperations } = req.body;
 
     if (!email || !password || !userType || !username) {
       return res.status(400).json({
@@ -97,10 +101,8 @@ const createUser = async (req, res) => {
       password,
       userType,
       username,
-      allowedOperations,
-      isActive
+      allowedOperations
     });
-
     return res.status(200).json({
       status: 200,
       data: {
@@ -182,6 +184,7 @@ const removeUser = async (req, res) => {
     const { userId } = req.body;
 
     await updateUserFunc({ userId, fieldToUpdate: { isActive: false } });
+    //dev only: await deleteUserFunc({userId})
 
     return res.status(200).json({
       status: 200,

@@ -2,7 +2,6 @@
 
 import express from "express";
 import mongoose from "../utilities/mongoose";
-// import mongoose from "mongoose";
 
 import {
   createUser,
@@ -10,15 +9,25 @@ import {
   getSingleUser,
   editUser,
   removeUser
-} from "./users/userCRUD";
+} from "./admins/userCRUD";
+import {
+  getSingleVehicle,
+  getVehicles,
+  addVehicle,
+  updateVehicle,
+  removeVehicle
+} from "./vehicles/vehiclesCRUD";
+import {
+  getVehicleTypes,
+  createVehicleType
+} from "./vehicleTypes/vehicleTypesCR";
+
 import { registerWithEmail } from "./authentication/email";
 import { login } from "./authentication/common";
 
 const router = express.Router();
 
-mongoose.connect(
-  process.env.ENV === "development" ? process.env.DEV_DB : process.env.PROD_DB
-);
+mongoose.connect(process.env.DB_CONNNECTION_STRING);
 
 /***************************
  * Authentication APIs
@@ -39,13 +48,51 @@ router.post("/apis/authentication/register/email", registerWithEmail);
 router.post("/apis/authentication/login", login);
 
 /***************************
- * User APIs
+ * Admin APIs
  ***************************/
-router.get("/apis/users", getUsers);
-router.get("/apis/users/:userId", getSingleUser);
-router.post("/apis/users", createUser);
-router.put("/apis/users", editUser);
-router.delete("/apis/users", removeUser);
+//middleware (authentication) => check if the user can access the api
+//ie. router.get("/apis/admins", authentication, getUsers);
+
+router.get("/apis/admins", getUsers);
+router.get("/apis/admins/:userId", getSingleUser);
+router.post("/apis/admins", createUser);
+router.put("/apis/admins", editUser);
+router.delete("/apis/admins", removeUser);
+
+/***************************
+ * Vehicle APIs
+ ***************************/
+router.get("/apis/vehicles", getVehicles);
+router.get("/apis/vehicles/:vehicleId/:language", getSingleVehicle);
+router.post("/apis/vehicles", addVehicle);
+router.put("/apis/vehicles", updateVehicle);
+router.delete("/apis/vehicles", removeVehicle);
+
+/***************************
+ * VehicleType APIs
+ ***************************/
+router.get("/apis/vehicleTypes", getVehicleTypes);
+router.post("/apis/vehicleTypes", () => {});
+
+/***************************
+ * Location APIs
+ ***************************/
+router.get("/apis/locations", () => {});
+router.post("/apis/locations", () => {});
+
+/***************************
+ * RentalCompany APIs
+ ***************************/
+router.get("/apis/rentalCompanies", () => {});
+router.post("/apis/rentalCompanies", () => {});
+
+/***************************
+ * Insurance APIs
+ ***************************/
+router.get("/apis/insurances", () => {});
+router.post("/apis/insurances", () => {});
+router.put("/apis/vehicles", () => {});
+router.delete("/apis/vehicles", () => {});
 
 router.all("*", function(req, res) {
   res.status(404).json({

@@ -1,6 +1,6 @@
 "use strict";
 
-import UserModel from "../../models/users";
+import UserModel from "../../models/admin";
 
 const SELECTED_FIELDS = {
   _id: 1,
@@ -73,4 +73,15 @@ const updateUserFunc = ({ userId, fieldToUpdate }) => {
   });
 };
 
-export { fetchUsersFunc, fetchSingleUserFunc, addUserFunc, updateUserFunc };
+// For data cleanup only
+const deleteUserFunc = ({ userId }) => {
+  return UserModel.deleteOne({ _id: userId });
+};
+
+export {
+  fetchUsersFunc,
+  fetchSingleUserFunc,
+  addUserFunc,
+  updateUserFunc,
+  deleteUserFunc
+};

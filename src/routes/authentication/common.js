@@ -1,7 +1,7 @@
 "user strict";
 
 import VerificationCodeModel from "../../models/verificationCode";
-import UserModel from "../../models/users";
+import UserModel from "../../models/admin";
 import logger from "../../utilities/logger";
 import jwt from "jsonwebtoken";
 import shortid from "shortid";
@@ -31,11 +31,19 @@ const login = async (req, res) => {
     }
 
     const userModel = new UserModel(user);
+
     const validPassword = await userModel.validPassword(password);
     if (!validPassword) {
       return res.status(400).send({
         status: 400,
         message: "Wrong password or username"
+      });
+    }
+
+    if (!!userModel && !userModel.isActive) {
+      return res.status(400).send({
+        status: 400,
+        message: "The user is suspended"
       });
     }
 
@@ -46,7 +54,8 @@ const login = async (req, res) => {
     const userInfo = await UserModel.findOne(query).select({
       userType: 1,
       allowedOperations: 1,
-      id: 1
+      id: 1,
+      username: 1
     });
 
     return res.status(200).send({

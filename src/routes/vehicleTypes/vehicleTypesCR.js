@@ -33,38 +33,25 @@ const getVehicleTypes = async (req, res) => {
 
 const createVehicleType = async (req, res) => {
   try {
-    const { email, password, userType, username, allowedOperations } = req.body;
+    const { type, trunkSize, seats } = req.body;
 
-    if (!email || !password || !userType || !username) {
+    if (!type || !trunkSize || !seats) {
       return res.status(400).json({
         status: 400,
         description: "missing fields"
       });
     }
 
-    // Check if email exists
-    const user = await UserModel.findOne({ email });
-    if (user) {
-      return res.status(409).json({
-        status: 409,
-        description: "Email exists"
-      });
-    }
-
-    const newUser = await addUserFunc({
-      email,
-      password,
-      userType,
-      username,
-      allowedOperations
+    const newVehicleType = await createVehicleTypeAsync({
+      type,
+      trunkSize,
+      seats
     });
-
-    console.log("newUser", newUser);
 
     return res.status(200).json({
       status: 200,
       data: {
-        newUser
+        newVehicleType
       }
     });
   } catch (err) {

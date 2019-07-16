@@ -1,11 +1,19 @@
 import VehicleType from "../../models/vehicleType";
 
-const SELECTED_FIELDS = {};
-
 export const getVehicleTypesAsync = () => {
   return VehicleType.find();
 };
 
-export const createVehicleTypeAsync = ({}) => {
-  return Promise.resolve();
+export const createVehicleTypeAsync = ({
+  type = "",
+  trunkSize = 0,
+  seats = 0
+}) => {
+  const newVehicleType = new VehicleType({
+    type,
+    trunkSize,
+    seats
+  });
+
+  return newVehicleType.save();
 };

@@ -72,7 +72,7 @@ router.delete("/apis/vehicles", removeVehicle);
  * VehicleType APIs
  ***************************/
 router.get("/apis/vehicleTypes", getVehicleTypes);
-router.post("/apis/vehicleTypes", () => {});
+router.post("/apis/vehicleTypes", createVehicleType);
 
 /***************************
  * Location APIs

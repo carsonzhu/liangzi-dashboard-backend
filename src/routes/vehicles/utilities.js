@@ -23,21 +23,39 @@ const ObjectId = mongoose.Types.ObjectId;
 export const getVehiclesAsync = () => {
   const vehiclePromise = VehicleModel.find();
   const vehicleTypePromise = VehicleType.find();
-  //TODO: locations & rental company & insurance
+  const locationPromise = LocationModel.find();
+  const rentalCompanyPromise = RentalCompanyModel.find();
+  const insurancePromise = InsuranceModel.find();
+  const vehicleCreatorPromise = VehicleCreator.find();
 
   return new Promise((resolve, reject) => {
-    Promise.all([vehiclePromise, vehicleCreatorPromise, vehicleTypePromise])
-      .then(([vehicles, vehicleCreators, vehicleTypes]) => {
-        if (!vehicles || !vehicles.length) {
-          return reject({ err: "No vehicle found" });
+    Promise.all([
+      vehiclePromise,
+      vehicleTypePromise,
+      locationPromise,
+      rentalCompanyPromise,
+      insurancePromise,
+      vehicleCreatorPromise
+    ])
+      .then(
+        ([
+          vehicles,
+          vehicleTypes,
+          locations,
+          rentalCompanys,
+          insurances,
+          vehicleCreators
+        ]) => {
+          return resolve({
+            vehicles,
+            vehicleTypes,
+            locations,
+            rentalCompanys,
+            insurances,
+            vehicleCreators
+          });
         }
-
-        // const result = vehicles.map(vehicle => {
-        //     vehicle.
-        // })
-
-        return resolve({ result: { vehicles, vehicleCreators, vehicleTypes } });
-      })
+      )
       .catch(reject);
   });
 };

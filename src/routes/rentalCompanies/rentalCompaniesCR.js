@@ -2,16 +2,16 @@
 
 import logger from "../../utilities/logger";
 
-import { getLocationsAsync, createLocationAsync } from "./utilities";
+import { getRentalCompaniesAsync, createRentalCompanyAsync } from "./utilities";
 
-export const getLocations = async (req, res) => {
+export const getRentalCompanies = async (req, res) => {
   try {
-    const locations = await getLocationsAsync();
+    const rentalCompanies = await getRentalCompaniesAsync();
 
     return res.status(200).json({
       status: 200,
       data: {
-        locations
+        rentalCompanies
       }
     });
   } catch (err) {
@@ -31,44 +31,30 @@ export const getLocations = async (req, res) => {
   }
 };
 
-export const createLocation = async (req, res) => {
+export const createRentalCompany = async (req, res) => {
   try {
-    const {
-      rentalCompanyId,
-      rentalCompanyName,
-      alias,
-      address,
-      hours,
-      timezone
-    } = req.body;
+    const { name, address, image, rating, perks, locationAlias } = req.body;
 
-    if (
-      !rentalCompanyId ||
-      !rentalCompanyName ||
-      !alias ||
-      !address ||
-      !hours ||
-      !timezone
-    ) {
+    if (!name || !address) {
       return res.status(400).json({
         status: 400,
-        description: "missing required fields"
+        description: "missing requried fields"
       });
     }
 
-    const newLocation = await createLocationAsync({
-      rentalCompanyId,
-      rentalCompanyName,
-      alias,
+    const newRentalCompany = await createRentalCompanyAsync({
+      name,
       address,
-      hours,
-      timezone
+      image,
+      rating,
+      perks,
+      locationAlias
     });
 
     return res.status(200).json({
       status: 200,
       data: {
-        newLocation
+        newRentalCompany
       }
     });
   } catch (err) {

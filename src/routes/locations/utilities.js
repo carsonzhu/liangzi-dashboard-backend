@@ -6,7 +6,7 @@ export const getLocationsAsync = () => {
   return LocationModel.find();
 };
 
-export const createLocationAsycn = ({
+export const createLocationAsync = ({
   rentalCompanyId,
   rentalCompanyName,
   alias,
@@ -14,5 +14,14 @@ export const createLocationAsycn = ({
   hours,
   timezone
 }) => {
-  return Promise.resolve();
+  const newLocation = new LocationModel({
+    rentalCompanyId,
+    rentalCompanyName,
+    alias,
+    address,
+    hours,
+    timezone
+  });
+
+  return newLocation.save();
 };

@@ -75,13 +75,62 @@ export const getSingleVehicle = async (req, res) => {
 
 export const addVehicle = async (req, res) => {
   try {
-    //TODO
-    const result = await addVehicleAsync({});
+    const {
+      adminId,
+      dailyRate,
+      dailyRateUnit,
+      pickupLocationIds,
+      returnLocationIds,
+      specialServices,
+      transmission,
+      vehicleTypeId,
+      rentalCompanyId,
+      vehicleMake,
+      vehicleImage,
+      vehicleNotes,
+      insuranceIds
+    } = req.body;
+
+    if (
+      !adminId ||
+      !dailyRate ||
+      !dailyRateUnit ||
+      !pickupLocationIds ||
+      !returnLocationIds ||
+      !transmission ||
+      !vehicleTypeId ||
+      !rentalCompanyId ||
+      !vehicleMake ||
+      !vehicleImage ||
+      !vehicleNotes ||
+      !insuranceIds
+    ) {
+      return res.status(400).json({
+        status: 400,
+        description: "missing requried fields"
+      });
+    }
+
+    const newVehicle = await addVehicleAsync({
+      adminId,
+      dailyRate,
+      dailyRateUnit,
+      pickupLocationIds,
+      returnLocationIds,
+      specialServices,
+      transmission,
+      vehicleTypeId,
+      rentalCompanyId,
+      vehicleMake,
+      vehicleImage,
+      vehicleNotes,
+      insuranceIds
+    });
 
     return res.status(200).json({
       status: 200,
       data: {
-        result
+        newVehicle
       }
     });
   } catch (err) {

@@ -103,7 +103,6 @@ const createUser = async (req, res) => {
       username,
       allowedOperations
     });
-
     return res.status(200).json({
       status: 200,
       data: {

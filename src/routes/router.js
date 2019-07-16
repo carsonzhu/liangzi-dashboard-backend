@@ -17,6 +17,10 @@ import {
   updateVehicle,
   removeVehicle
 } from "./vehicles/vehiclesCRUD";
+import {
+  getVehicleTypes,
+  createVehicleType
+} from "./vehicleTypes/vehicleTypesCR";
 
 import { registerWithEmail } from "./authentication/email";
 import { login } from "./authentication/common";
@@ -63,6 +67,32 @@ router.get("/apis/vehicles/:vehicleId/:language", getSingleVehicle);
 router.post("/apis/vehicles", addVehicle);
 router.put("/apis/vehicles", updateVehicle);
 router.delete("/apis/vehicles", removeVehicle);
+
+/***************************
+ * VehicleType APIs
+ ***************************/
+router.get("/apis/vehicleTypes", getVehicleTypes);
+router.post("/apis/vehicleTypes", () => {});
+
+/***************************
+ * Location APIs
+ ***************************/
+router.get("/apis/locations", () => {});
+router.post("/apis/locations", () => {});
+
+/***************************
+ * RentalCompany APIs
+ ***************************/
+router.get("/apis/rentalCompanies", () => {});
+router.post("/apis/rentalCompanies", () => {});
+
+/***************************
+ * Insurance APIs
+ ***************************/
+router.get("/apis/insurances", () => {});
+router.post("/apis/insurances", () => {});
+router.put("/apis/vehicles", () => {});
+router.delete("/apis/vehicles", () => {});
 
 router.all("*", function(req, res) {
   res.status(404).json({

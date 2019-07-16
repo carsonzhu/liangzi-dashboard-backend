@@ -21,6 +21,7 @@ import {
   getVehicleTypes,
   createVehicleType
 } from "./vehicleTypes/vehicleTypesCR";
+import { getLocations, createLocation } from "./locations/locationCR";
 
 import { registerWithEmail } from "./authentication/email";
 import { login } from "./authentication/common";
@@ -77,8 +78,8 @@ router.post("/apis/vehicleTypes", createVehicleType);
 /***************************
  * Location APIs
  ***************************/
-router.get("/apis/locations", () => {});
-router.post("/apis/locations", () => {});
+router.get("/apis/locations", getLocations);
+router.post("/apis/locations", createLocation);
 
 /***************************
  * RentalCompany APIs

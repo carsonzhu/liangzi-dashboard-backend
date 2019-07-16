@@ -1,3 +1,5 @@
+"use strict";
+
 import VehicleModel from "../../models/vehicle";
 import VehicleCreator from "../../models/vehicleCreator";
 import VehicleType from "../../models/vehicleType";
@@ -169,7 +171,7 @@ export const addVehicleAsync = async ({
   await newVehicleCreator.save();
 };
 
-export const updateVehicleAsync = ({ vehicleId, fieldToUpdate }) => {
+export const updateVehicleAsync = ({ adminId, vehicleId, fieldToUpdate }) => {
   return new Promise((resolve, reject) => {
     VehicleModel.findOne({ _id: vehicleId })
       .then(vehicle => {

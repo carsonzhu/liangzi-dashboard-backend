@@ -3,26 +3,24 @@
 import logger from "../../utilities/logger";
 
 import {
-  getSingleVehicleAsync,
-  getVehiclesAsync,
-  addVehicleAsync,
-  updateVehicleAsync,
-  removeVehicleAsync,
-  advancedVehicleQuery
+  getNewVehiclesAsync,
+  createNewVehicleAsync,
+  updateNewVehicleAsync,
+  deleteNewVehicleAsync
 } from "./utilities";
 
-import { UNAVAILABLE } from "../../utilities/constants";
-
-export const getVehicles = async (req, res) => {
+export const getNewVehicles = async (req, res) => {
   try {
     //TODO: uncomment
     // const adminId = req.userId;
-    const result = await getVehiclesAsync();
+    const { adminId, isSuper = false } = req.body;
+
+    const vehicles = await getNewVehiclesAsync({ adminId, isSuper });
 
     return res.status(200).json({
       status: 200,
       data: {
-        result
+        vehicles
       }
     });
   } catch (err) {
@@ -42,55 +40,21 @@ export const getVehicles = async (req, res) => {
   }
 };
 
-export const getSingleVehicle = async (req, res) => {
-  logger.info({ url: req.url }, "receive request");
-
-  const { vehicleId = null, language = null } = req.params;
-
-  if (!language) {
-    return res.status(400).json({
-      status: 400,
-      error: "Language is required"
-    });
-  }
-
-  if (!vehicleId) {
-    return res.status(400).json({
-      status: 400,
-      error: "VehicleId is required"
-    });
-  }
-
-  try {
-    // const vehicle = await getSingleVehicleAsync({ vehicleId });
-    const vehicles = await advancedVehicleQuery({ vehicleId, language });
-
-    return res.status(200).json({
-      status: 200,
-      result: vehicles
-    });
-  } catch (err) {
-    return res.status(500).json({
-      status: 500,
-      err
-    });
-  }
-};
-
-export const addVehicle = async (req, res) => {
+export const createNewVehicle = async (req, res) => {
   try {
     //TODO: uncomment
     // const adminId = req.userId;
 
     const {
-      adminId,
       dailyRate,
       dailyRateUnit,
-      pickupLocationIds,
-      returnLocationIds,
+      pickupLocationAddresses,
+      returnLocationAddresses,
       specialServices,
       transmission,
-      vehicleTypeId,
+      vehicleType,
+      trunkSize,
+      seats,
       rentalCompanyId,
       vehicleMake,
       vehicleImage,
@@ -99,15 +63,18 @@ export const addVehicle = async (req, res) => {
     } = req.body;
 
     if (
-      !adminId ||
       !dailyRate ||
       !dailyRateUnit ||
-      !pickupLocationIds ||
-      !returnLocationIds ||
+      !pickupLocationAddresses ||
+      !returnLocationAddresses ||
+      !specialServices ||
       !transmission ||
-      !vehicleTypeId ||
+      !vehicleType ||
+      !trunkSize ||
+      !seats ||
       !rentalCompanyId ||
       !vehicleMake ||
+      !vehicleImage ||
       !vehicleNotes ||
       !insuranceIds
     ) {
@@ -117,15 +84,17 @@ export const addVehicle = async (req, res) => {
       });
     }
 
-    const newVehicle = await addVehicleAsync({
+    const newVehicle = await createNewVehicleAsync({
       adminId,
       dailyRate,
       dailyRateUnit,
-      pickupLocationIds,
-      returnLocationIds,
+      pickupLocationAddresses,
+      returnLocationAddresses,
       specialServices,
       transmission,
-      vehicleTypeId,
+      vehicleType,
+      trunkSize,
+      seats,
       rentalCompanyId,
       vehicleMake,
       vehicleImage,
@@ -156,17 +125,17 @@ export const addVehicle = async (req, res) => {
   }
 };
 
-export const updateVehicle = async (req, res) => {
+export const updateNewVehicle = async (req, res) => {
   try {
     //TODO: uncomment
     // const adminId = req.userId;
 
-    const { adminId, vehicleId, fieldToUpdate } = req.body;
+    const { adminId, vehicleId, fieldToUpdate, isSuper = false } = req.body;
 
-    if (!adminId || !vehicleId || !fieldToUpdate) {
+    if (!newVehicleId || !fieldToUpdate) {
       return res.status(400).json({
         status: 400,
-        description: "missing adminId, vehicleId, or fieldToUpdate"
+        description: "missing requried fields"
       });
     }
 
@@ -174,10 +143,12 @@ export const updateVehicle = async (req, res) => {
       "dailyRateDisplay",
       "dailyRate",
       "dailyRateUnit",
-      "pickupLocationIds",
-      "returnLocationIds",
+      "pickupLocationAddresses",
+      "returnLocationAddresses",
       "transmission",
-      "vehicleTypeId",
+      "vehicleType",
+      "trunkSize",
+      "seats",
       "rentalCompanyId",
       "vehicleMake",
       "vehicleNotes",
@@ -194,11 +165,7 @@ export const updateVehicle = async (req, res) => {
       }
     }
 
-    await updateVehicleAsync({
-      adminId,
-      vehicleId,
-      fieldToUpdate
-    });
+    await updateNewVehicleAsync({ adminId, vehicleId, fieldToUpdate, isSuper });
 
     return res.status(200).json({
       status: 200,
@@ -223,18 +190,20 @@ export const updateVehicle = async (req, res) => {
   }
 };
 
-export const removeVehicle = async (req, res) => {
+export const deleteNewVehicle = async (req, res) => {
   try {
     //TODO: uncomment
     // const adminId = req.userId;
-    const { adminId, vehicleId } = req.body;
 
-    await updateVehicleAsync({
+    const { adminId, vehicleId, isSuper = false } = req.body;
+
+    await updateNewVehicleAsync({
       adminId,
+      isSuper,
       vehicleId,
       fieldToUpdate: { vehicleStatus: UNAVAILABLE }
     });
-    //dev only: await removeVehicleAsync({ vehicleId })
+    // await deleteNewVehicleAsync({vehicleId})
 
     return res.status(200).json({
       status: 200,

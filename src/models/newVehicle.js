@@ -12,8 +12,7 @@ import { validateUrl, localeObjectValidation } from "../utilities/validations";
 
 const Schema = mongoose.Schema;
 
-// TODO: hardcoded pickupLocation object and stuff into a new vehicleModel
-const VehicleSchema = new Schema({
+const NewVehicleSchema = new Schema({
   dailyRateDisplay: {
     type: Number,
     required: true
@@ -27,14 +26,30 @@ const VehicleSchema = new Schema({
     validator: localeObjectValidation,
     required: true
   },
-  pickupLocationIds: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "locations" }],
-    required: true
-  },
-  returnLocationIds: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "locations" }],
-    required: true
-  },
+
+  //   pickupLocationIds: {
+  //     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "locations" }],
+  //     required: true
+  //   },
+  pickupLocationAddresses: [
+    {
+      type: mongoose.Schema.Types.Mixed,
+      validator: localeObjectValidation,
+      required: true
+    }
+  ],
+  //   returnLocationIds: {
+  //     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "locations" }],
+  //     required: true
+  //   },
+  returnLocationAddresses: [
+    {
+      type: mongoose.Schema.Types.Mixed,
+      validator: localeObjectValidation,
+      required: true
+    }
+  ],
+
   specialServices: {
     type: [mongoose.Schema.Types.Mixed],
     validator: localeObjectValidation,
@@ -45,11 +60,27 @@ const VehicleSchema = new Schema({
     enum: [AUTOMATIC, MANUAL],
     required: true
   },
-  vehicleTypeId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "vehicle_types",
+
+  //   vehicleTypeId: {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "vehicle_types",
+  //     required: true
+  //   },
+  vehicleType: {
+    type: mongoose.Schema.Types.Mixed,
+    validator: localeObjectValidation,
+    required: true,
+    unique: true
+  },
+  trunkSize: {
+    type: Number,
     required: true
   },
+  seats: {
+    type: Number,
+    required: true
+  },
+
   rentalCompanyId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
@@ -83,4 +114,4 @@ const VehicleSchema = new Schema({
 
 const myDB = mongoose.connection.useDb(process.env.WEB_BACKEND_DB);
 
-export default myDB.model("vehicles", VehicleSchema);
+export default myDB.model("newVehicles", NewVehicleSchema);

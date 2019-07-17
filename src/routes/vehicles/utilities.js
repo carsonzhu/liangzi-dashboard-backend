@@ -1,9 +1,12 @@
+"use strict";
+
 import VehicleModel from "../../models/vehicle";
 import VehicleCreator from "../../models/vehicleCreator";
 import VehicleType from "../../models/vehicleType";
 import LocationModel from "../../models/location";
 import RentalCompanyModel from "../../models/rentalCompany";
 import InsuranceModel from "../../models/insurance";
+import InsuranceCreator from "../../models/insuranceCreator";
 
 import * as locale from "../../locale/locale";
 import localeClass from "../../locale/localeClass";
@@ -20,24 +23,47 @@ import mongoose from "mongoose";
 import { AVAILABLE, AUTOMATIC } from "../../utilities/constants";
 const ObjectId = mongoose.Types.ObjectId;
 
-export const getVehiclesAsync = () => {
+// TODO: filtering based on adminId
+export const getVehiclesAsync = ({ adminId, isSuper }) => {
   const vehiclePromise = VehicleModel.find();
   const vehicleTypePromise = VehicleType.find();
-  //TODO: locations & rental company & insurance
+  const locationPromise = LocationModel.find();
+  const rentalCompanyPromise = RentalCompanyModel.find();
+  const insurancePromise = InsuranceModel.find();
+  const vehicleCreatorPromise = VehicleCreator.find();
+  const insuranceCreatorPromise = InsuranceCreator.find();
 
   return new Promise((resolve, reject) => {
-    Promise.all([vehiclePromise, vehicleCreatorPromise, vehicleTypePromise])
-      .then(([vehicles, vehicleCreators, vehicleTypes]) => {
-        if (!vehicles || !vehicles.length) {
-          return reject({ err: "No vehicle found" });
+    Promise.all([
+      vehiclePromise,
+      vehicleTypePromise,
+      locationPromise,
+      rentalCompanyPromise,
+      insurancePromise,
+      vehicleCreatorPromise,
+      insuranceCreatorPromise
+    ])
+      .then(
+        ([
+          vehicles,
+          vehicleTypes,
+          locations,
+          rentalCompanys,
+          insurances,
+          vehicleCreators,
+          insuranceCreators
+        ]) => {
+          return resolve({
+            vehicles,
+            vehicleTypes,
+            locations,
+            rentalCompanys,
+            insurances,
+            vehicleCreators,
+            insuranceCreators
+          });
         }
-
-        // const result = vehicles.map(vehicle => {
-        //     vehicle.
-        // })
-
-        return resolve({ result: { vehicles, vehicleCreators, vehicleTypes } });
-      })
+      )
       .catch(reject);
   });
 };
@@ -143,20 +169,34 @@ export const addVehicleAsync = async ({
     update,
     options
   );
+
   const newVehicleCreator = new VehicleCreator({
     adminId,
     vehicleId: newVehicle._id
   });
 
   await newVehicleCreator.save();
+  return Promise.resolve(newVehicle);
 };
 
-export const updateVehicleAsync = ({ vehicleId, fieldToUpdate }) => {
+export const updateVehicleAsync = ({
+  adminId,
+  vehicleId,
+  fieldToUpdate,
+  isSuper = true
+}) => {
+  if (isSuper) {
+    return VehicleModel.updateOne({ _id: vehicleId }, fieldToUpdate);
+  }
+
   return new Promise((resolve, reject) => {
-    VehicleModel.findOne({ _id: vehicleId })
-      .then(vehicle => {
-        if (!vehicle) {
-          return reject({ status: 400, msg: "invalid vehicleId" });
+    VehicleCreator.findOne({ adminId, vehicleId })
+      .then(vehicleCreator => {
+        if (!vehicleCreator) {
+          return reject({
+            status: 400,
+            msg: "This admin hasnt created any vehicle with that id"
+          });
         }
 
         return VehicleModel.updateOne({ _id: vehicleId }, fieldToUpdate);

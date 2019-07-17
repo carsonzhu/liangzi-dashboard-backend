@@ -2,16 +2,16 @@
 
 import logger from "../../utilities/logger";
 
-import { getVehicleTypesAsync, createVehicleTypeAsync } from "./utilities";
+import { getRentalCompaniesAsync, createRentalCompanyAsync } from "./utilities";
 
-const getVehicleTypes = async (req, res) => {
+export const getRentalCompanies = async (req, res) => {
   try {
-    const vehicleTypes = await getVehicleTypesAsync();
+    const rentalCompanies = await getRentalCompaniesAsync();
 
     return res.status(200).json({
       status: 200,
       data: {
-        vehicleTypes
+        rentalCompanies
       }
     });
   } catch (err) {
@@ -31,27 +31,30 @@ const getVehicleTypes = async (req, res) => {
   }
 };
 
-const createVehicleType = async (req, res) => {
+export const createRentalCompany = async (req, res) => {
   try {
-    const { type, trunkSize, seats } = req.body;
+    const { name, address, image, rating, perks, locationAlias } = req.body;
 
-    if (!type || !trunkSize || !seats) {
+    if (!name || !address) {
       return res.status(400).json({
         status: 400,
-        description: "missing fields"
+        description: "missing requried fields"
       });
     }
 
-    const newVehicleType = await createVehicleTypeAsync({
-      type,
-      trunkSize,
-      seats
+    const newRentalCompany = await createRentalCompanyAsync({
+      name,
+      address,
+      image,
+      rating,
+      perks,
+      locationAlias
     });
 
     return res.status(200).json({
       status: 200,
       data: {
-        newVehicleType
+        newRentalCompany
       }
     });
   } catch (err) {
@@ -70,5 +73,3 @@ const createVehicleType = async (req, res) => {
     });
   }
 };
-
-export { getVehicleTypes, createVehicleType };

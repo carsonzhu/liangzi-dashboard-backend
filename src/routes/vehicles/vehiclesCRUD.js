@@ -173,7 +173,8 @@ export const updateVehicle = async (req, res) => {
       "rentalCompanyId",
       "vehicleMake",
       "vehicleNotes",
-      "insuranceIds"
+      "insuranceIds",
+      "vehicleStatus"
     ];
 
     for (let key in fieldToUpdate) {

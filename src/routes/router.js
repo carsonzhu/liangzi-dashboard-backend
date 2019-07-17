@@ -18,6 +18,12 @@ import {
   removeVehicle
 } from "./vehicles/vehiclesCRUD";
 import {
+  getNewVehicles,
+  createNewVehicle,
+  updateNewVehicle,
+  deleteNewVehicle
+} from "./newVehicles/newVehiclesCRUD";
+import {
   getVehicleTypes,
   createVehicleType
 } from "./vehicleTypes/vehicleTypesCR";
@@ -70,14 +76,22 @@ router.post("/apis/admins", createUser);
 router.put("/apis/admins", editUser);
 router.delete("/apis/admins", removeUser);
 
+// /***************************
+//  * Vehicle APIs
+//  ***************************/
+// router.get("/apis/vehicles", getVehicles);
+// router.get("/apis/vehicles/:vehicleId/:language", getSingleVehicle);
+// router.post("/apis/vehicles", addVehicle);
+// router.put("/apis/vehicles", updateVehicle);
+// router.delete("/apis/vehicles", removeVehicle);
+
 /***************************
- * Vehicle APIs
+ * New Vehicle APIs
  ***************************/
-router.get("/apis/vehicles", getVehicles);
-router.get("/apis/vehicles/:vehicleId/:language", getSingleVehicle);
-router.post("/apis/vehicles", addVehicle);
-router.put("/apis/vehicles", updateVehicle);
-router.delete("/apis/vehicles", removeVehicle);
+router.get("/apis/vehicles", getNewVehicles);
+router.post("/apis/vehicles", createNewVehicle);
+router.put("/apis/vehicles", updateNewVehicle);
+router.delete("/apis/vehicles", deleteNewVehicle);
 
 /***************************
  * VehicleType APIs

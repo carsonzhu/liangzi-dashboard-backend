@@ -127,7 +127,7 @@ export const updateNewVehicle = async (req, res) => {
   try {
     const adminId = req.userId;
 
-    const { newVehicleId, fieldToUpdate } = req.body;
+    const { vehicleId, fieldToUpdate, isSuper = false } = req.body;
 
     if (!newVehicleId || !fieldToUpdate) {
       return res.status(400).json({
@@ -135,6 +135,41 @@ export const updateNewVehicle = async (req, res) => {
         description: "missing requried fields"
       });
     }
+
+    const vehicleFields = [
+      "dailyRateDisplay",
+      "dailyRate",
+      "dailyRateUnit",
+      "pickupLocationAddresses",
+      "returnLocationAddresses",
+      "transmission",
+      "vehicleType",
+      "trunkSize",
+      "seats",
+      "rentalCompanyId",
+      "vehicleMake",
+      "vehicleNotes",
+      "insuranceIds",
+      "vehicleStatus"
+    ];
+
+    for (let key in fieldToUpdate) {
+      if (vehicleFields.indexOf(key) === -1) {
+        return res.status(400).json({
+          status: 400,
+          description: "invalid/ non-existing field(s)"
+        });
+      }
+    }
+
+    await updateNewVehicleAsync({ adminId, vehicleId, fieldToUpdate, isSuper });
+
+    return res.status(200).json({
+      status: 200,
+      data: {
+        msg: "Update Successfully!"
+      }
+    });
   } catch (err) {
     logger.error(err);
 
@@ -156,7 +191,22 @@ export const deleteNewVehicle = async (req, res) => {
   try {
     const adminId = req.userId;
 
-    const { newVehicleId } = req.body;
+    const { vehicleId, isSuper = false } = req.body;
+
+    await updateNewVehicleAsync({
+      adminId,
+      isSuper,
+      vehicleId,
+      fieldToUpdate: { vehicleStatus: UNAVAILABLE }
+    });
+    // await deleteNewVehicleAsync({vehicleId})
+
+    return res.status(200).json({
+      status: 200,
+      data: {
+        msg: "Disable Successfully!"
+      }
+    });
   } catch (err) {
     logger.error(err);
 

@@ -3,7 +3,7 @@
 import InsuranceModel from "../../models/insurance";
 import InsuranceCreator from "../../models/insuranceCreator";
 
-export const getInsurancesAsync = ({ adminId, isSuper = false }) => {
+export const getInsurancesAsync = ({ adminId = "", isSuper = false }) => {
   if (isSuper) {
     return InsuranceModel.find();
   } else {

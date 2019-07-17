@@ -12,7 +12,11 @@ import {
 
 export const getInsurances = async (req, res) => {
   try {
-    const insurances = await getInsurancesAsync();
+    //TODO: uncomment after jwt token exchange
+    // const adminId = req.userId;
+
+    // TODO: Figure out how to pass "isSuper" parameter safely in a GET request...
+    const insurances = await getInsurancesAsync({ isSuper: true });
     const insuranceCreators = await getInsuranceCreatorAsync();
 
     return res.status(200).json({
@@ -41,6 +45,9 @@ export const getInsurances = async (req, res) => {
 
 export const createInsurance = async (req, res) => {
   try {
+    //TODO: uncomment
+    // const adminId = req.userId;
+
     const {
       adminId,
       rentalCompanyId,
@@ -101,6 +108,9 @@ export const createInsurance = async (req, res) => {
 
 export const editInsurance = async (req, res) => {
   try {
+    //TODO: uncomment
+    // const adminId = req.userId;
+
     const { adminId, insuranceId, fieldToUpdate } = req.body;
 
     if (!adminId || !insuranceId || !fieldToUpdate) {
@@ -159,6 +169,9 @@ export const editInsurance = async (req, res) => {
 
 export const removeInsurance = async (req, res) => {
   try {
+    //TODO: uncomment
+    // const adminId = req.userId;
+
     const { adminId, insuranceId } = req.body;
 
     if (!adminId || !insuranceId) {

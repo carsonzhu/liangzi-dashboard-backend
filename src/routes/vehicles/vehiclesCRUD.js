@@ -15,6 +15,8 @@ import { UNAVAILABLE } from "../../utilities/constants";
 
 export const getVehicles = async (req, res) => {
   try {
+    //TODO: uncomment
+    // const adminId = req.userId;
     const result = await getVehiclesAsync();
 
     return res.status(200).json({
@@ -77,6 +79,9 @@ export const getSingleVehicle = async (req, res) => {
 
 export const addVehicle = async (req, res) => {
   try {
+    //TODO: uncomment
+    // const adminId = req.userId;
+
     const {
       adminId,
       dailyRate,
@@ -153,6 +158,9 @@ export const addVehicle = async (req, res) => {
 
 export const updateVehicle = async (req, res) => {
   try {
+    //TODO: uncomment
+    // const adminId = req.userId;
+
     const { adminId, vehicleId, fieldToUpdate } = req.body;
 
     if (!adminId || !vehicleId || !fieldToUpdate) {
@@ -217,6 +225,8 @@ export const updateVehicle = async (req, res) => {
 
 export const removeVehicle = async (req, res) => {
   try {
+    //TODO: uncomment
+    // const adminId = req.userId;
     const { adminId, vehicleId } = req.body;
 
     await updateVehicleAsync({

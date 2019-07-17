@@ -11,8 +11,9 @@ import {
 
 export const getNewVehicles = async (req, res) => {
   try {
-    const adminId = req.userId;
-    const { isSuper = false } = req.body;
+    //TODO: uncomment
+    // const adminId = req.userId;
+    const { adminId, isSuper = false } = req.body;
 
     const vehicles = await getNewVehiclesAsync({ adminId, isSuper });
 
@@ -41,7 +42,8 @@ export const getNewVehicles = async (req, res) => {
 
 export const createNewVehicle = async (req, res) => {
   try {
-    const adminId = req.userId;
+    //TODO: uncomment
+    // const adminId = req.userId;
 
     const {
       dailyRate,
@@ -125,9 +127,10 @@ export const createNewVehicle = async (req, res) => {
 
 export const updateNewVehicle = async (req, res) => {
   try {
-    const adminId = req.userId;
+    //TODO: uncomment
+    // const adminId = req.userId;
 
-    const { vehicleId, fieldToUpdate, isSuper = false } = req.body;
+    const { adminId, vehicleId, fieldToUpdate, isSuper = false } = req.body;
 
     if (!newVehicleId || !fieldToUpdate) {
       return res.status(400).json({
@@ -189,9 +192,10 @@ export const updateNewVehicle = async (req, res) => {
 
 export const deleteNewVehicle = async (req, res) => {
   try {
-    const adminId = req.userId;
+    //TODO: uncomment
+    // const adminId = req.userId;
 
-    const { vehicleId, isSuper = false } = req.body;
+    const { adminId, vehicleId, isSuper = false } = req.body;
 
     await updateNewVehicleAsync({
       adminId,

@@ -179,7 +179,16 @@ export const addVehicleAsync = async ({
   return Promise.resolve(newVehicle);
 };
 
-export const updateVehicleAsync = ({ adminId, vehicleId, fieldToUpdate }) => {
+export const updateVehicleAsync = ({
+  adminId,
+  vehicleId,
+  fieldToUpdate,
+  isSuper = true
+}) => {
+  if (isSuper) {
+    return VehicleModel.updateOne({ _id: vehicleId }, fieldToUpdate);
+  }
+
   return new Promise((resolve, reject) => {
     VehicleCreator.findOne({ adminId, vehicleId })
       .then(vehicleCreator => {

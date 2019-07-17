@@ -16,21 +16,41 @@ export const createInsuranceAsync = async ({
   dailyRate,
   dailyRateUnit
 }) => {
-  const newInsuranceInstance = new InsuranceModel({
+  const insuranceInputs = {
     rentalCompanyId,
     rentalCompanyName,
     name,
     description,
     dailyRate,
     dailyRateUnit
-  });
-  const newInsurance = await newInsuranceInstance.save();
+  };
+
+  let query = { name, rentalCompanyId },
+    update = insuranceInputs,
+    options = { upsert: true, new: true };
+
+  //   const newInsuranceInstance = new InsuranceModel({
+  //     rentalCompanyId,
+  //     rentalCompanyName,
+  //     name,
+  //     description,
+  //     dailyRate,
+  //     dailyRateUnit
+  //   });
+  //  const newInsurance = await newInsuranceInstance.save()
+  const newInsurance = await InsuranceModel.findOneAndUpdate(
+    query,
+    update,
+    options
+  );
 
   const newInsuranceCreatorInstance = new InsuranceCreator({
     adminId,
     insuranceId: newInsurance._id
   });
   await newInsuranceCreatorInstance.save();
+
+  return Promise.resolve(newInsurance);
 };
 
 export const editInsuranceAsync = ({ adminId, insuranceId, fieldToUpdate }) => {
@@ -68,4 +88,9 @@ export const removeInsuranceAsync = ({ adminId, insuranceId }) => {
       .then(resolve)
       .catch(reject);
   });
+};
+
+//Dev only
+export const getInsuranceCreatorAsync = () => {
+  return InsuranceCreator.find();
 };

@@ -163,12 +163,14 @@ export const addVehicleAsync = async ({
     update,
     options
   );
+
   const newVehicleCreator = new VehicleCreator({
     adminId,
     vehicleId: newVehicle._id
   });
 
   await newVehicleCreator.save();
+  return Promise.resolve(newVehicle);
 };
 
 export const updateVehicleAsync = ({ adminId, vehicleId, fieldToUpdate }) => {

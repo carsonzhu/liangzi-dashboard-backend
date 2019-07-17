@@ -3,8 +3,33 @@
 import InsuranceModel from "../../models/insurance";
 import InsuranceCreator from "../../models/insuranceCreator";
 
-export const getInsurancesAsync = () => {
-  return InsuranceModel.find();
+export const getInsurancesAsync = ({ adminId, isSuper = false }) => {
+  if (isSuper) {
+    return InsuranceModel.find();
+  } else {
+    return new Promise((resolve, reject) => {
+      InsuranceCreator.find({ adminId })
+        .then(insuranceCreators => {
+          if (!insuranceCreators || !insuranceCreators.length) {
+            return reject({
+              status: 400,
+              msg: "This admin hasnt created any insurance with that id"
+            });
+          }
+
+          const ids = insuranceCreators.map(insuranceCreator => {
+            return new ObjectId(insuranceCreator.insuranceId);
+          });
+
+          return InsuranceModel.find()
+            .where("_id")
+            .in(ids)
+            .exec();
+        })
+        .then(resolve)
+        .catch(reject);
+    });
+  }
 };
 
 export const createInsuranceAsync = async ({

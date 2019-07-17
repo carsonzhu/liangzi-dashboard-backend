@@ -1,3 +1,5 @@
+"use strict";
+
 import logger from "../../utilities/logger";
 
 import {

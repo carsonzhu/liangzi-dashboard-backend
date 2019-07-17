@@ -6,6 +6,7 @@ import VehicleType from "../../models/vehicleType";
 import LocationModel from "../../models/location";
 import RentalCompanyModel from "../../models/rentalCompany";
 import InsuranceModel from "../../models/insurance";
+import InsuranceCreator from "../../models/insuranceCreator";
 
 import * as locale from "../../locale/locale";
 import localeClass from "../../locale/localeClass";
@@ -22,13 +23,15 @@ import mongoose from "mongoose";
 import { AVAILABLE, AUTOMATIC } from "../../utilities/constants";
 const ObjectId = mongoose.Types.ObjectId;
 
-export const getVehiclesAsync = () => {
+// TODO: filtering based on adminId
+export const getVehiclesAsync = ({ adminId, isSuper }) => {
   const vehiclePromise = VehicleModel.find();
   const vehicleTypePromise = VehicleType.find();
   const locationPromise = LocationModel.find();
   const rentalCompanyPromise = RentalCompanyModel.find();
   const insurancePromise = InsuranceModel.find();
   const vehicleCreatorPromise = VehicleCreator.find();
+  const insuranceCreatorPromise = InsuranceCreator.find();
 
   return new Promise((resolve, reject) => {
     Promise.all([
@@ -37,7 +40,8 @@ export const getVehiclesAsync = () => {
       locationPromise,
       rentalCompanyPromise,
       insurancePromise,
-      vehicleCreatorPromise
+      vehicleCreatorPromise,
+      insuranceCreatorPromise
     ])
       .then(
         ([
@@ -46,7 +50,8 @@ export const getVehiclesAsync = () => {
           locations,
           rentalCompanys,
           insurances,
-          vehicleCreators
+          vehicleCreators,
+          insuranceCreators
         ]) => {
           return resolve({
             vehicles,
@@ -54,7 +59,8 @@ export const getVehiclesAsync = () => {
             locations,
             rentalCompanys,
             insurances,
-            vehicleCreators
+            vehicleCreators,
+            insuranceCreators
           });
         }
       )

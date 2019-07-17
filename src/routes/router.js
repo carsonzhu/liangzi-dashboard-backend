@@ -22,6 +22,16 @@ import {
   createVehicleType
 } from "./vehicleTypes/vehicleTypesCR";
 import { getLocations, createLocation } from "./locations/locationCR";
+import {
+  getRentalCompanies,
+  createRentalCompany
+} from "./rentalCompanies/rentalCompaniesCR";
+import {
+  getInsurances,
+  createInsurance,
+  editInsurance,
+  removeInsurance
+} from "./insurances/insurancesCRUD";
 
 import { registerWithEmail } from "./authentication/email";
 import { login } from "./authentication/common";
@@ -84,16 +94,16 @@ router.post("/apis/locations", createLocation);
 /***************************
  * RentalCompany APIs
  ***************************/
-router.get("/apis/rentalCompanies", () => {});
-router.post("/apis/rentalCompanies", () => {});
+router.get("/apis/rentalCompanies", getRentalCompanies);
+router.post("/apis/rentalCompanies", createRentalCompany);
 
 /***************************
  * Insurance APIs
  ***************************/
-router.get("/apis/insurances", () => {});
-router.post("/apis/insurances", () => {});
-router.put("/apis/vehicles", () => {});
-router.delete("/apis/vehicles", () => {});
+router.get("/apis/insurances", getInsurances);
+router.post("/apis/insurances", createInsurance);
+router.put("/apis/insurances", editInsurance);
+router.delete("/apis/insurances", removeInsurance);
 
 router.all("*", function(req, res) {
   res.status(404).json({

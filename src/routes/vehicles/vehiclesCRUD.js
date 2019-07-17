@@ -101,7 +101,6 @@ export const addVehicle = async (req, res) => {
       !vehicleTypeId ||
       !rentalCompanyId ||
       !vehicleMake ||
-      !vehicleImage ||
       !vehicleNotes ||
       !insuranceIds
     ) {
@@ -152,12 +151,42 @@ export const addVehicle = async (req, res) => {
 
 export const updateVehicle = async (req, res) => {
   try {
-    const { vehicleId } = req.body;
+    const { adminId, vehicleId, fieldToUpdate } = req.body;
 
-    //TODO
+    if (!adminId || !vehicleId || !fieldToUpdate) {
+      return res.status(400).json({
+        status: 400,
+        description: "missing adminId, vehicleId, or fieldToUpdate"
+      });
+    }
+
+    const vehicleFields = [
+      "dailyRateDisplay",
+      "dailyRate",
+      "dailyRateUnit",
+      "pickupLocationIds",
+      "returnLocationIds",
+      "transmission",
+      "vehicleTypeId",
+      "rentalCompanyId",
+      "vehicleMake",
+      "vehicleNotes",
+      "insuranceIds"
+    ];
+
+    for (let key in fieldToUpdate) {
+      if (vehicleFields.indexOf(key) === -1) {
+        return res.status(400).json({
+          status: 400,
+          description: "invalid/ non-existing field(s)"
+        });
+      }
+    }
+
     await updateVehicleAsync({
+      adminId,
       vehicleId,
-      fieldToUpdate: { vehicleStatus: UNAVAILABLE } //TODO: fields
+      fieldToUpdate
     });
 
     return res.status(200).json({
@@ -185,9 +214,10 @@ export const updateVehicle = async (req, res) => {
 
 export const removeVehicle = async (req, res) => {
   try {
-    const { vehicleId } = req.body;
+    const { adminId, vehicleId } = req.body;
 
     await updateVehicleAsync({
+      adminId,
       vehicleId,
       fieldToUpdate: { vehicleStatus: UNAVAILABLE }
     });

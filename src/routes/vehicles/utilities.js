@@ -173,10 +173,13 @@ export const addVehicleAsync = async ({
 
 export const updateVehicleAsync = ({ adminId, vehicleId, fieldToUpdate }) => {
   return new Promise((resolve, reject) => {
-    VehicleModel.findOne({ _id: vehicleId })
-      .then(vehicle => {
-        if (!vehicle) {
-          return reject({ status: 400, msg: "invalid vehicleId" });
+    VehicleCreator.findOne({ adminId, vehicleId })
+      .then(vehicleCreator => {
+        if (!vehicleCreator) {
+          return reject({
+            status: 400,
+            msg: "This admin hasnt created any vehicle with that id"
+          });
         }
 
         return VehicleModel.updateOne({ _id: vehicleId }, fieldToUpdate);

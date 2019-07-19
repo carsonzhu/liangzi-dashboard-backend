@@ -2,6 +2,8 @@
 
 import logger from "../../utilities/logger";
 
+import { SUPER_ADMIN } from "../../utilities/constants";
+
 import {
   getNewVehiclesAsync,
   createNewVehicleAsync,
@@ -12,9 +14,12 @@ import {
 export const getNewVehicles = async (req, res) => {
   try {
     const adminId = req.userId;
-    const { isSuper = "" } = req.params;
+    const userType = req.userType;
 
-    const vehicles = await getNewVehiclesAsync({ adminId, isSuper: !!isSuper });
+    const vehicles = await getNewVehiclesAsync({
+      adminId,
+      isSuper: userType === SUPER_ADMIN
+    });
 
     return res.status(200).json({
       status: 200,
@@ -124,8 +129,9 @@ export const createNewVehicle = async (req, res) => {
 export const updateNewVehicle = async (req, res) => {
   try {
     const adminId = req.userId;
+    const userType = req.userType;
 
-    const { vehicleId, fieldToUpdate, isSuper = false } = req.body;
+    const { vehicleId, fieldToUpdate } = req.body;
 
     if (!newVehicleId || !fieldToUpdate) {
       return res.status(400).json({
@@ -160,7 +166,12 @@ export const updateNewVehicle = async (req, res) => {
       }
     }
 
-    await updateNewVehicleAsync({ adminId, vehicleId, fieldToUpdate, isSuper });
+    await updateNewVehicleAsync({
+      adminId,
+      vehicleId,
+      fieldToUpdate,
+      isSuper: userType === SUPER_ADMIN
+    });
 
     return res.status(200).json({
       status: 200,
@@ -188,12 +199,13 @@ export const updateNewVehicle = async (req, res) => {
 export const deleteNewVehicle = async (req, res) => {
   try {
     const adminId = req.userId;
+    const userType = req.userType;
 
-    const { vehicleId, isSuper = false } = req.body;
+    const { vehicleId } = req.body;
 
     await updateNewVehicleAsync({
       adminId,
-      isSuper,
+      isSuper: userType === SUPER_ADMIN,
       vehicleId,
       fieldToUpdate: { vehicleStatus: UNAVAILABLE }
     });

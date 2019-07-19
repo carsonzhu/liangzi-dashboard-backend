@@ -2,6 +2,8 @@
 
 import logger from "../../utilities/logger";
 
+import { SUPER_ADMIN } from "../../utilities/constants";
+
 import {
   createInsuranceAsync,
   getInsurancesAsync,
@@ -12,11 +14,13 @@ import {
 
 export const getInsurances = async (req, res) => {
   try {
-    //TODO: uncomment after jwt token exchange
-    // const adminId = req.userId;
+    const adminId = req.userId;
+    const userType = req.userType;
 
-    // TODO: Figure out how to pass "isSuper" parameter safely in a GET request...
-    const insurances = await getInsurancesAsync({ isSuper: true });
+    const insurances = await getInsurancesAsync({
+      adminId,
+      isSuper: userType === "superAdmin"
+    });
     const insuranceCreators = await getInsuranceCreatorAsync();
 
     return res.status(200).json({
@@ -45,11 +49,9 @@ export const getInsurances = async (req, res) => {
 
 export const createInsurance = async (req, res) => {
   try {
-    //TODO: uncomment
-    // const adminId = req.userId;
+    const adminId = req.userId;
 
     const {
-      adminId,
       rentalCompanyId,
       rentalCompanyName,
       name,
@@ -108,10 +110,10 @@ export const createInsurance = async (req, res) => {
 
 export const editInsurance = async (req, res) => {
   try {
-    //TODO: uncomment
-    // const adminId = req.userId;
+    const adminId = req.userId;
+    const userType = req.userType;
 
-    const { adminId, insuranceId, fieldToUpdate } = req.body;
+    const { insuranceId, fieldToUpdate } = req.body;
 
     if (!adminId || !insuranceId || !fieldToUpdate) {
       return res.status(400).json({
@@ -141,7 +143,8 @@ export const editInsurance = async (req, res) => {
     await editInsuranceAsync({
       adminId,
       insuranceId,
-      fieldToUpdate
+      fieldToUpdate,
+      isSuper: userType === SUPER_ADMIN
     });
 
     return res.status(200).json({
@@ -169,10 +172,10 @@ export const editInsurance = async (req, res) => {
 
 export const removeInsurance = async (req, res) => {
   try {
-    //TODO: uncomment
-    // const adminId = req.userId;
+    const adminId = req.userId;
+    const userType = req.userType;
 
-    const { adminId, insuranceId } = req.body;
+    const { insuranceId } = req.body;
 
     if (!adminId || !insuranceId) {
       return res.status(400).json({
@@ -183,7 +186,8 @@ export const removeInsurance = async (req, res) => {
 
     await removeInsuranceAsync({
       adminId,
-      insuranceId
+      insuranceId,
+      isSuper: userType === SUPER_ADMIN
     });
 
     return res.status(200).json({

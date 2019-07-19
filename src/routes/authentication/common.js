@@ -47,9 +47,13 @@ const login = async (req, res) => {
       });
     }
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_EXPIRE_HOURS // expires in 24 hours
-    });
+    const token = jwt.sign(
+      { userId: user._id, userType: user.userType },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: process.env.JWT_EXPIRE_HOURS // expires in 24 hours
+      }
+    );
 
     const userInfo = await UserModel.findOne(query).select({
       userType: 1,

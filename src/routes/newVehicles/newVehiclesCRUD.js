@@ -46,8 +46,8 @@ export const createNewVehicle = async (req, res) => {
     const {
       dailyRate,
       dailyRateUnit,
-      pickupLocationAddresses,
-      returnLocationAddresses,
+      locationAddress,
+      locationHours,
       specialServices,
       transmission,
       vehicleType,
@@ -63,8 +63,8 @@ export const createNewVehicle = async (req, res) => {
     if (
       !dailyRate ||
       !dailyRateUnit ||
-      !pickupLocationAddresses ||
-      !returnLocationAddresses ||
+      !locationAddress ||
+      !locationHours ||
       !transmission ||
       !vehicleType ||
       !trunkSize ||
@@ -84,8 +84,8 @@ export const createNewVehicle = async (req, res) => {
       adminId,
       dailyRate,
       dailyRateUnit,
-      pickupLocationAddresses,
-      returnLocationAddresses,
+      locationAddress,
+      locationHours,
       specialServices,
       transmission,
       vehicleType,
@@ -138,8 +138,8 @@ export const updateNewVehicle = async (req, res) => {
       "dailyRateDisplay",
       "dailyRate",
       "dailyRateUnit",
-      "pickupLocationAddresses",
-      "returnLocationAddresses",
+      "locationAddress",
+      "locationHours",
       "transmission",
       "vehicleType",
       "trunkSize",
@@ -197,7 +197,7 @@ export const deleteNewVehicle = async (req, res) => {
       vehicleId,
       fieldToUpdate: { vehicleStatus: UNAVAILABLE }
     });
-    // await deleteNewVehicleAsync({vehicleId})
+    // dev only: await deleteNewVehicleAsync({ vehicleId });
 
     return res.status(200).json({
       status: 200,

@@ -11,11 +11,10 @@ import {
 
 export const getNewVehicles = async (req, res) => {
   try {
-    //TODO: uncomment
-    // const adminId = req.userId;
-    const { adminId, isSuper = false } = req.body;
+    const adminId = req.userId;
+    const { isSuper = "" } = req.params;
 
-    const vehicles = await getNewVehiclesAsync({ adminId, isSuper });
+    const vehicles = await getNewVehiclesAsync({ adminId, isSuper: !!isSuper });
 
     return res.status(200).json({
       status: 200,
@@ -42,8 +41,7 @@ export const getNewVehicles = async (req, res) => {
 
 export const createNewVehicle = async (req, res) => {
   try {
-    //TODO: uncomment
-    // const adminId = req.userId;
+    const adminId = req.userId;
 
     const {
       dailyRate,
@@ -67,14 +65,12 @@ export const createNewVehicle = async (req, res) => {
       !dailyRateUnit ||
       !pickupLocationAddresses ||
       !returnLocationAddresses ||
-      !specialServices ||
       !transmission ||
       !vehicleType ||
       !trunkSize ||
       !seats ||
       !rentalCompanyId ||
       !vehicleMake ||
-      !vehicleImage ||
       !vehicleNotes ||
       !insuranceIds
     ) {
@@ -127,10 +123,9 @@ export const createNewVehicle = async (req, res) => {
 
 export const updateNewVehicle = async (req, res) => {
   try {
-    //TODO: uncomment
-    // const adminId = req.userId;
+    const adminId = req.userId;
 
-    const { adminId, vehicleId, fieldToUpdate, isSuper = false } = req.body;
+    const { vehicleId, fieldToUpdate, isSuper = false } = req.body;
 
     if (!newVehicleId || !fieldToUpdate) {
       return res.status(400).json({
@@ -192,10 +187,9 @@ export const updateNewVehicle = async (req, res) => {
 
 export const deleteNewVehicle = async (req, res) => {
   try {
-    //TODO: uncomment
-    // const adminId = req.userId;
+    const adminId = req.userId;
 
-    const { adminId, vehicleId, isSuper = false } = req.body;
+    const { vehicleId, isSuper = false } = req.body;
 
     await updateNewVehicleAsync({
       adminId,

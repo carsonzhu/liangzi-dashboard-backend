@@ -27,28 +27,84 @@ const NewVehicleSchema = new Schema({
     required: true
   },
 
-  //   pickupLocationIds: {
-  //     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "locations" }],
-  //     required: true
-  //   },
-  pickupLocationAddresses: [
-    {
-      type: mongoose.Schema.Types.Mixed,
-      validator: localeObjectValidation,
-      required: true
+  locationAddress: {
+    type: mongoose.Schema.Types.Mixed,
+    validator: localeObjectValidation,
+    required: true
+  },
+
+  locationHours: {
+    mon: {
+      open: {
+        type: String,
+        required: true
+      },
+      close: {
+        type: String,
+        required: true
+      }
+    },
+    tue: {
+      open: {
+        type: String,
+        required: true
+      },
+      close: {
+        type: String,
+        required: true
+      }
+    },
+    wed: {
+      open: {
+        type: String,
+        required: true
+      },
+      close: {
+        type: String,
+        required: true
+      }
+    },
+    thur: {
+      open: {
+        type: String,
+        required: true
+      },
+      close: {
+        type: String,
+        required: true
+      }
+    },
+    fri: {
+      open: {
+        type: String,
+        required: true
+      },
+      close: {
+        type: String,
+        required: true
+      }
+    },
+    sat: {
+      open: {
+        type: String,
+        required: true
+      },
+      close: {
+        type: String,
+        required: true
+      }
+    },
+    sun: {
+      open: {
+        type: String,
+        required: true
+      },
+      close: {
+        type: String,
+        required: true
+      }
     }
-  ],
-  //   returnLocationIds: {
-  //     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "locations" }],
-  //     required: true
-  //   },
-  returnLocationAddresses: [
-    {
-      type: mongoose.Schema.Types.Mixed,
-      validator: localeObjectValidation,
-      required: true
-    }
-  ],
+  },
 
   specialServices: {
     type: [mongoose.Schema.Types.Mixed],
@@ -61,16 +117,10 @@ const NewVehicleSchema = new Schema({
     required: true
   },
 
-  //   vehicleTypeId: {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: "vehicle_types",
-  //     required: true
-  //   },
   vehicleType: {
     type: mongoose.Schema.Types.Mixed,
     validator: localeObjectValidation,
-    required: true,
-    unique: true
+    required: true
   },
   trunkSize: {
     type: Number,

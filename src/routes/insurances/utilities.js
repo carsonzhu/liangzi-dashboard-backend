@@ -41,33 +41,15 @@ export const createInsuranceAsync = async ({
   dailyRate,
   dailyRateUnit
 }) => {
-  const insuranceInputs = {
+  const newInsuranceInstance = new InsuranceModel({
     rentalCompanyId,
     rentalCompanyName,
     name,
     description,
     dailyRate,
     dailyRateUnit
-  };
-
-  let query = { name, rentalCompanyId },
-    update = insuranceInputs,
-    options = { upsert: true, new: true };
-
-  //   const newInsuranceInstance = new InsuranceModel({
-  //     rentalCompanyId,
-  //     rentalCompanyName,
-  //     name,
-  //     description,
-  //     dailyRate,
-  //     dailyRateUnit
-  //   });
-  //  const newInsurance = await newInsuranceInstance.save()
-  const newInsurance = await InsuranceModel.findOneAndUpdate(
-    query,
-    update,
-    options
-  );
+  });
+  const newInsurance = await newInsuranceInstance.save();
 
   const newInsuranceCreatorInstance = new InsuranceCreator({
     adminId,
@@ -78,7 +60,16 @@ export const createInsuranceAsync = async ({
   return Promise.resolve(newInsurance);
 };
 
-export const editInsuranceAsync = ({ adminId, insuranceId, fieldToUpdate }) => {
+export const editInsuranceAsync = ({
+  adminId,
+  insuranceId,
+  fieldToUpdate,
+  isSuper
+}) => {
+  if (isSuper) {
+    return InsuranceModel.updateOne({ _id: insuranceId }, fieldToUpdate);
+  }
+
   return new Promise((resolve, reject) => {
     InsuranceCreator.findOne({ adminId, insuranceId })
       .then(insuranceCreator => {
@@ -97,7 +88,11 @@ export const editInsuranceAsync = ({ adminId, insuranceId, fieldToUpdate }) => {
 };
 
 // Dev only
-export const removeInsuranceAsync = ({ adminId, insuranceId }) => {
+export const removeInsuranceAsync = ({ adminId, insuranceId, isSuper }) => {
+  if (isSuper) {
+    return InsuranceModel.deleteOne({ _id: insuranceId });
+  }
+
   return new Promise((resolve, reject) => {
     InsuranceCreator.findOne({ adminId, insuranceId })
       .then(insuranceCreator => {

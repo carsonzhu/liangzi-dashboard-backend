@@ -3,37 +3,18 @@
 import InsuranceModel from "../../models/insurance";
 import InsuranceCreator from "../../models/insuranceCreator";
 
-export const getInsurancesAsync = ({ adminId = "", isSuper = false }) => {
+export const getInsurancesAsync = ({
+  rentalCompanyId = "",
+  isSuper = false
+}) => {
   if (isSuper) {
     return InsuranceModel.find();
   } else {
-    return new Promise((resolve, reject) => {
-      InsuranceCreator.find({ adminId })
-        .then(insuranceCreators => {
-          if (!insuranceCreators || !insuranceCreators.length) {
-            return reject({
-              status: 400,
-              msg: "This admin hasnt created any insurance with that id"
-            });
-          }
-
-          const ids = insuranceCreators.map(insuranceCreator => {
-            return new ObjectId(insuranceCreator.insuranceId);
-          });
-
-          return InsuranceModel.find()
-            .where("_id")
-            .in(ids)
-            .exec();
-        })
-        .then(resolve)
-        .catch(reject);
-    });
+    return InsuranceModel.find({ rentalCompanyId });
   }
 };
 
 export const createInsuranceAsync = async ({
-  adminId,
   rentalCompanyId,
   rentalCompanyName,
   name,
@@ -49,31 +30,25 @@ export const createInsuranceAsync = async ({
     dailyRate,
     dailyRateUnit
   });
-  const newInsurance = await newInsuranceInstance.save();
 
-  const newInsuranceCreatorInstance = new InsuranceCreator({
-    adminId,
-    insuranceId: newInsurance._id
-  });
-  await newInsuranceCreatorInstance.save();
-
-  return Promise.resolve(newInsurance);
+  return newInsuranceInstance.save();
 };
 
 export const editInsuranceAsync = ({
   adminId,
   insuranceId,
   fieldToUpdate,
-  isSuper
+  isSuper,
+  rentalCompanyId
 }) => {
   if (isSuper) {
     return InsuranceModel.updateOne({ _id: insuranceId }, fieldToUpdate);
   }
 
   return new Promise((resolve, reject) => {
-    InsuranceCreator.findOne({ adminId, insuranceId })
-      .then(insuranceCreator => {
-        if (!insuranceCreator) {
+    InsuranceModel.findOne({ rentalCompanyId, insuranceId })
+      .then(insurance => {
+        if (!insurance) {
           return reject({
             status: 400,
             msg: "This admin hasnt created any insurance with that id"
@@ -88,15 +63,20 @@ export const editInsuranceAsync = ({
 };
 
 // Dev only
-export const removeInsuranceAsync = ({ adminId, insuranceId, isSuper }) => {
+export const removeInsuranceAsync = ({
+  adminId,
+  insuranceId,
+  isSuper,
+  rentalCompanyId
+}) => {
   if (isSuper) {
     return InsuranceModel.deleteOne({ _id: insuranceId });
   }
 
   return new Promise((resolve, reject) => {
-    InsuranceCreator.findOne({ adminId, insuranceId })
-      .then(insuranceCreator => {
-        if (!insuranceCreator) {
+    InsuranceModel.findOne({ rentalCompanyId, insuranceId })
+      .then(insurance => {
+        if (!insurance) {
           return reject({
             status: 400,
             msg: "This admin hasnt created any insurance with that id"
@@ -111,6 +91,6 @@ export const removeInsuranceAsync = ({ adminId, insuranceId, isSuper }) => {
 };
 
 //Dev only
-export const getInsuranceCreatorAsync = () => {
-  return InsuranceCreator.find();
-};
+// export const getInsuranceCreatorAsync = () => {
+//   return InsuranceCreator.find();
+// };

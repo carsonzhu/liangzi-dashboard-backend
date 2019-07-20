@@ -41,6 +41,7 @@ const authentication = (req, res, next) => {
 
       req.userId = decoded.userId;
       req.userType = decoded.userType;
+      req.rentalCompanyId = decoded.rentalCompanyId;
       logger.info(`Request: ${req.method} ${req.path} User=${req.userId}`);
       return next();
     });

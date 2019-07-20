@@ -2,8 +2,12 @@
 
 import RentalCompany from "../../models/rentalCompany";
 
-export const getRentalCompaniesAsync = () => {
-  return RentalCompany.find();
+export const getRentalCompaniesAsync = ({ isSuper, rentalCompanyId }) => {
+  if (isSuper) {
+    return RentalCompany.find();
+  }
+
+  return RentalCompany.find({ _id: rentalCompanyId });
 };
 
 export const createRentalCompanyAsync = ({

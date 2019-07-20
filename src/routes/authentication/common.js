@@ -48,7 +48,11 @@ const login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { userId: user._id, userType: user.userType },
+      {
+        userId: user._id,
+        userType: user.userType,
+        rentalCompanyId: user.rentalCompanyId
+      },
       process.env.JWT_SECRET,
       {
         expiresIn: process.env.JWT_EXPIRE_HOURS // expires in 24 hours

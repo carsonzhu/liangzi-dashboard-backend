@@ -15,16 +15,19 @@ export const getNewVehicles = async (req, res) => {
   try {
     const adminId = req.userId;
     const userType = req.userType;
+    const rentalCompanyId = req.rentalCompanyId;
 
     const vehicles = await getNewVehiclesAsync({
       adminId,
+      rentalCompanyId,
       isSuper: userType === SUPER_ADMIN
     });
 
     return res.status(200).json({
       status: 200,
       data: {
-        vehicles
+        vehicles,
+        rentalCompanies
       }
     });
   } catch (err) {

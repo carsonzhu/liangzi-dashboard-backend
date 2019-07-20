@@ -20,7 +20,8 @@ const UserSchema = new Schema({
   allowedOperations: [
     { type: String, enum: ["cars", "users", "insurances", "transactions"] }
   ],
-  isActive: Boolean
+  isActive: Boolean,
+  rentalCompanyId: { type: String, required: true }
 });
 
 UserSchema.methods.generateHash = function generateHash(value) {

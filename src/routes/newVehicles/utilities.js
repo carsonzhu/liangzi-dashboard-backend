@@ -1,43 +1,18 @@
 "use strict";
 
 import NewVehicleModel from "../../models/newVehicle";
-import VehicleCreator from "../../models/vehicleCreator";
 
-import mongoose from "mongoose";
 import { AVAILABLE, AUTOMATIC } from "../../utilities/constants";
-const ObjectId = mongoose.Types.ObjectId;
 
-export const getNewVehiclesAsync = ({ adminId, isSuper = false }) => {
+export const getNewVehiclesAsync = ({ isSuper = false, rentalCompanyId }) => {
   if (isSuper) {
     return NewVehicleModel.find();
   } else {
-    return new Promise((resolve, reject) => {
-      VehicleCreator.find({ adminId })
-        .then(vehicleCreators => {
-          if (!vehicleCreators || !vehicleCreators.length) {
-            return reject({
-              status: 400,
-              msg: "This admin hasnt created any vehicle with that id"
-            });
-          }
-
-          const ids = vehicleCreators.map(vehicleCreator => {
-            return new ObjectId(vehicleCreator.vehicleId);
-          });
-
-          return NewVehicleModel.find()
-            .where("_id")
-            .in(ids)
-            .exec();
-        })
-        .then(resolve)
-        .catch(reject);
-    });
+    return NewVehicleModel.find({ rentalCompanyId });
   }
 };
 
 export const createNewVehicleAsync = async ({
-  adminId,
   dailyRate = 0,
   dailyRateUnit = "CAD",
   locationAddress = "",
@@ -72,19 +47,11 @@ export const createNewVehicleAsync = async ({
     vehicleStatus: AVAILABLE
   });
 
-  const newVehicleResult = await NewVehicleInput.save();
-
-  const newVehicleCreator = new VehicleCreator({
-    adminId,
-    vehicleId: newVehicleResult._id
-  });
-
-  await newVehicleCreator.save();
-  return Promise.resolve(newVehicleResult);
+  return NewVehicleInput.save();
 };
 
 export const updateNewVehicleAsync = ({
-  adminId,
+  rentalCompanyId,
   vehicleId,
   fieldToUpdate,
   isSuper = false
@@ -93,9 +60,9 @@ export const updateNewVehicleAsync = ({
     return NewVehicleModel.updateOne({ _id: vehicleId }, fieldToUpdate);
   } else {
     return new Promise((resolve, reject) => {
-      VehicleCreator.findOne({ adminId, vehicleId })
-        .then(vehicleCreator => {
-          if (!vehicleCreator) {
+      NewVehicleModel.findOne({ rentalCompanyId, _id: vehicleId })
+        .then(vehicle => {
+          if (!vehicle) {
             return reject({
               status: 400,
               msg: "This admin hasnt created any vehicle with that id"

@@ -78,9 +78,16 @@ const getSingleUser = async (req, res) => {
 
 const createUser = async (req, res) => {
   try {
-    const { email, password, userType, username, allowedOperations } = req.body;
+    const {
+      email,
+      password,
+      userType,
+      username,
+      allowedOperations,
+      rentalCompanyId
+    } = req.body;
 
-    if (!email || !password || !userType || !username) {
+    if (!email || !password || !userType || !username || !rentalCompanyId) {
       return res.status(400).json({
         status: 400,
         description: "missing fields"
@@ -101,7 +108,8 @@ const createUser = async (req, res) => {
       password,
       userType,
       username,
-      allowedOperations
+      allowedOperations,
+      rentalCompanyId
     });
     return res.status(200).json({
       status: 200,
@@ -142,7 +150,8 @@ const editUser = async (req, res) => {
       "userType",
       "username",
       "allowedOperations",
-      "isActive"
+      "isActive",
+      "rentalCompanyId"
     ];
 
     for (let key in fieldToUpdate) {

@@ -16,10 +16,12 @@ export const getInsurances = async (req, res) => {
   try {
     const adminId = req.userId;
     const userType = req.userType;
+    const rentalCompanyId = req.rentalCompanyId;
 
     const insurances = await getInsurancesAsync({
       adminId,
-      isSuper: userType === "superAdmin"
+      isSuper: userType === SUPER_ADMIN,
+      rentalCompanyId
     });
     const insuranceCreators = await getInsuranceCreatorAsync();
 
@@ -112,6 +114,7 @@ export const editInsurance = async (req, res) => {
   try {
     const adminId = req.userId;
     const userType = req.userType;
+    const rentalCompanyId = req.rentalCompanyId;
 
     const { insuranceId, fieldToUpdate } = req.body;
 
@@ -144,7 +147,8 @@ export const editInsurance = async (req, res) => {
       adminId,
       insuranceId,
       fieldToUpdate,
-      isSuper: userType === SUPER_ADMIN
+      isSuper: userType === SUPER_ADMIN,
+      rentalCompanyId
     });
 
     return res.status(200).json({
@@ -187,7 +191,8 @@ export const removeInsurance = async (req, res) => {
     await removeInsuranceAsync({
       adminId,
       insuranceId,
-      isSuper: userType === SUPER_ADMIN
+      isSuper: userType === SUPER_ADMIN,
+      rentalCompanyId
     });
 
     return res.status(200).json({

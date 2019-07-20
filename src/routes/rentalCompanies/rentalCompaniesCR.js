@@ -3,10 +3,17 @@
 import logger from "../../utilities/logger";
 
 import { getRentalCompaniesAsync, createRentalCompanyAsync } from "./utilities";
+import { SUPER_ADMIN } from "../../utilities/constants";
 
 export const getRentalCompanies = async (req, res) => {
   try {
-    const rentalCompanies = await getRentalCompaniesAsync();
+    const userType = req.userType;
+    const rentalCompanyId = req.rentalCompanyId;
+
+    const rentalCompanies = await getRentalCompaniesAsync({
+      rentalCompanyId,
+      isSuper: userType === SUPER_ADMIN
+    });
 
     return res.status(200).json({
       status: 200,

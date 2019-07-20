@@ -35,7 +35,8 @@ const addUserFunc = ({
   password = "",
   userType = "",
   username = "",
-  allowedOperations = []
+  allowedOperations = [],
+  rentalCompanyId = ""
 }) => {
   const newUser = new UserModel({
     email,
@@ -43,7 +44,8 @@ const addUserFunc = ({
     userType,
     username,
     allowedOperations,
-    isActive: true
+    isActive: true,
+    rentalCompanyId
   });
 
   return new Promise((resolve, reject) => {

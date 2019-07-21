@@ -21,8 +21,10 @@ import {
   getNewVehicles,
   createNewVehicle,
   updateNewVehicle,
-  deleteNewVehicle
+  deleteNewVehicle,
+  updateNewVehicleImage
 } from "./newVehicles/newVehiclesCRUD";
+import { upload } from "../middlewares/multer";
 import {
   getVehicleTypes,
   createVehicleType
@@ -93,6 +95,7 @@ router.get("/apis/vehicles", getNewVehicles);
 router.post("/apis/vehicles", createNewVehicle);
 router.put("/apis/vehicles", updateNewVehicle);
 router.delete("/apis/vehicles", deleteNewVehicle);
+router.post("/apis/vehicles/updateImage", upload.single("image"), updateNewVehicleImage);
 
 /***************************
  * VehicleType APIs

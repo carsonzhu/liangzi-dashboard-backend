@@ -23,13 +23,11 @@ export const getInsurances = async (req, res) => {
       isSuper: userType === SUPER_ADMIN,
       rentalCompanyId
     });
-    const insuranceCreators = await getInsuranceCreatorAsync();
 
     return res.status(200).json({
       status: 200,
       data: {
-        insurances,
-        insuranceCreators
+        insurances
       }
     });
   } catch (err) {

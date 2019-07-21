@@ -2,7 +2,11 @@
 
 import logger from "../../utilities/logger";
 
-import { getRentalCompaniesAsync, createRentalCompanyAsync } from "./utilities";
+import {
+  getRentalCompaniesAsync,
+  createRentalCompanyAsync,
+  deleteRentalCompanyAsync
+} from "./utilities";
 import { SUPER_ADMIN } from "../../utilities/constants";
 
 export const getRentalCompanies = async (req, res) => {
@@ -62,6 +66,36 @@ export const createRentalCompany = async (req, res) => {
       status: 200,
       data: {
         newRentalCompany
+      }
+    });
+  } catch (err) {
+    logger.error(err);
+
+    if (err.status === 400) {
+      return res.status(400).json({
+        status: 400,
+        description: err.msg
+      });
+    }
+
+    res.status(500).json({
+      status: 500,
+      description: "Internal Error"
+    });
+  }
+};
+
+// DEV only: for data cleanup
+export const deleteRentalCompany = async (req, res) => {
+  try {
+    const { rentalCompanyId } = req.body;
+
+    await deleteRentalCompanyAsync({ rentalCompanyId });
+
+    return res.status(200).json({
+      status: 200,
+      data: {
+        msg: "Delete Successfully!"
       }
     });
   } catch (err) {

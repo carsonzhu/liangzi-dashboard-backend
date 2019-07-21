@@ -29,3 +29,7 @@ export const createRentalCompanyAsync = ({
 
   return newRentalCompany.save();
 };
+
+export const deleteRentalCompanyAsync = ({ rentalCompanyId }) => {
+  return RentalCompany.deleteOne({ _id: rentalCompanyId });
+};

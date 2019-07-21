@@ -30,7 +30,8 @@ import {
 import { getLocations, createLocation } from "./locations/locationCR";
 import {
   getRentalCompanies,
-  createRentalCompany
+  createRentalCompany,
+  deleteRentalCompany
 } from "./rentalCompanies/rentalCompaniesCR";
 import {
   getInsurances,
@@ -110,6 +111,7 @@ router.post("/apis/locations", createLocation);
  ***************************/
 router.get("/apis/rentalCompanies", getRentalCompanies);
 router.post("/apis/rentalCompanies", createRentalCompany);
+router.delete("/apis/rentalCompanies", deleteRentalCompany);
 
 /***************************
  * Insurance APIs

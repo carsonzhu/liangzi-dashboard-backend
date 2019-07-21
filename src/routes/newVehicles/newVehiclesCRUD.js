@@ -8,8 +8,49 @@ import {
   getNewVehiclesAsync,
   createNewVehicleAsync,
   updateNewVehicleAsync,
-  deleteNewVehicleAsync
+  deleteNewVehicleAsync,
+  updateNewVehicleImageAsync
 } from "./utilities";
+
+export const updateNewVehicleImage = async (req, res) => {
+  try {
+    const userType = req.userType;
+    const rentalCompanyId = req.rentalCompanyId;
+    const vehicleId = req.body.vehicleId;
+
+    if (!req.file) {
+      return res.status(400).json({
+        status: 400,
+        description: "Missing file"
+      });
+    }
+
+    if (!vehicleId) {
+      return res.status(400).json({
+        status: 400,
+        description: "missing newVehicleId"
+      });
+    }
+
+    const vehicle = await updateNewVehicleImageAsync({
+      vehicleId: vehicleId,
+      file: req.file,
+      rentalCompanyId: rentalCompanyId,
+      isSuper: userType === SUPER_ADMIN
+    });
+
+    return res.status(200).json({
+      status: 200,
+      vehicle: vehicle
+    });
+  } catch (err) {
+    logger.error(err);
+    res.status(500).json({
+      status: 500,
+      description: "Internal error"
+    });
+  }
+};
 
 export const getNewVehicles = async (req, res) => {
   try {

@@ -12,6 +12,43 @@ export const getNewVehiclesAsync = ({ isSuper = false, rentalCompanyId }) => {
   }
 };
 
+export const updateNewVehicleImageAsync = async ({
+  vehicleId,
+  file,
+  rentalCompanyId,
+  isSuper = false
+}) => {
+  if (isSuper) {
+    let updatedVehicle = await NewVehicleModel.findOneAndUpdate(
+      { _id: vehicleId },
+      {
+        $set: {
+          vehicleImage: {
+            data: file.buffer,
+            contentType: file.mimetype
+          }
+        }
+      },
+      { new: true }
+    );
+    return updatedVehicle;
+  } else {
+    let updatedVehicle = await NewVehicleModel.findOneAndUpdate(
+      { _id: vehicleId, rentalCompanyId: rentalCompanyId },
+      {
+        $set: {
+          vehicleImage: {
+            data: file.buffer,
+            contentType: file.mimetype
+          }
+        }
+      },
+      { new: true }
+    );
+    return updatedVehicle;
+  }
+};
+
 export const createNewVehicleAsync = async ({
   dailyRate = 0,
   dailyRateUnit = "CAD",

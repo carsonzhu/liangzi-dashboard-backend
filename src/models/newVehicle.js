@@ -142,9 +142,8 @@ const NewVehicleSchema = new Schema({
     required: true
   },
   vehicleImage: {
-    type: String,
-    validator: validateUrl,
-    unique: true
+    data: Buffer,
+    contentType: String
   },
   vehicleNotes: {
     type: mongoose.Schema.Types.Mixed,

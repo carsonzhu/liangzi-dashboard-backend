@@ -55,8 +55,9 @@ const authentication = (req, res, next) => {
 };
 
 const authenticationForLocalTesting = (req, res, next) => {
-  let userId = "c86b79ca-b0e8-441e-97a3-724998ca9460";
-  req.userId = userId;
+  req.userId = "5d2e74e59f6032efbe55c250";
+  req.userType = "normalAdmin";
+  req.rentalCompanyId = "5d2e4e704422fae1b237807b";
   logger.info(`Request: ${req.method} ${req.path} User=${req.userId}`);
   next();
 };

@@ -26,8 +26,7 @@ export const getNewVehicles = async (req, res) => {
     return res.status(200).json({
       status: 200,
       data: {
-        vehicles,
-        rentalCompanies
+        vehicles
       }
     });
   } catch (err) {

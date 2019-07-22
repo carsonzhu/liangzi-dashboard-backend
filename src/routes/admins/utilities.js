@@ -8,7 +8,8 @@ const SELECTED_FIELDS = {
   username: 1,
   userType: 1,
   allowedOperations: 1,
-  isActive: 1
+  isActive: 1,
+  rentalCompanyId: 1
 };
 
 const fetchUsersFunc = () => {

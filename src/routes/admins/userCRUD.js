@@ -156,6 +156,8 @@ const editUser = async (req, res) => {
 
     for (let key in fieldToUpdate) {
       if (userFields.indexOf(key) === -1) {
+        logger.error("userFields error", key);
+
         return res.status(400).json({
           status: 400,
           description: "invalid/ non-existing field(s)"

@@ -134,6 +134,8 @@ export const editInsurance = async (req, res) => {
 
     for (let key in fieldToUpdate) {
       if (!insuranceFields.includes(key)) {
+        logger.error("insuranceFields error", key);
+
         return res.status(400).json({
           status: 400,
           description: "invalid/ non-existing field(s)"
@@ -176,6 +178,7 @@ export const removeInsurance = async (req, res) => {
   try {
     const adminId = req.userId;
     const userType = req.userType;
+    const rentalCompanyId = req.rentalCompanyId;
 
     const { insuranceId } = req.body;
 

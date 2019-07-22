@@ -135,7 +135,7 @@ export const updateNewVehicle = async (req, res) => {
 
     const { vehicleId, fieldToUpdate } = req.body;
 
-    if (!newVehicleId || !fieldToUpdate) {
+    if (!vehicleId || !fieldToUpdate) {
       return res.status(400).json({
         status: 400,
         description: "missing requried fields"
@@ -149,6 +149,7 @@ export const updateNewVehicle = async (req, res) => {
       "locationAddress",
       "locationHours",
       "transmission",
+      "specialServices",
       "vehicleType",
       "trunkSize",
       "seats",
@@ -161,6 +162,8 @@ export const updateNewVehicle = async (req, res) => {
 
     for (let key in fieldToUpdate) {
       if (vehicleFields.indexOf(key) === -1) {
+        logger.error("vehicleFields error", key);
+
         return res.status(400).json({
           status: 400,
           description: "invalid/ non-existing field(s)"

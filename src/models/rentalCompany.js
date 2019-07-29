@@ -1,6 +1,7 @@
 "use strict";
 
 import mongoose from "mongoose";
+import { AVAILABLE, UNAVAILABLE } from "../utilities/constants";
 import { validateUrl, localeObjectValidation } from "../utilities/validations";
 
 const Schema = mongoose.Schema;
@@ -33,6 +34,11 @@ const RentalCompanySchema = new Schema({
   locationAlias: {
     type: [mongoose.Schema.Types.Mixed],
     validator: localeObjectValidation
+  },
+  rentalCompanyStatus: {
+    type: String,
+    enum: [AVAILABLE, UNAVAILABLE],
+    required: true
   }
 });
 

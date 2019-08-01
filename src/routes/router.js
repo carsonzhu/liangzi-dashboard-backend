@@ -33,8 +33,9 @@ import { getLocations, createLocation } from "./locations/locationCR";
 import {
   getRentalCompanies,
   createRentalCompany,
+  editRentalCompany,
   deleteRentalCompany
-} from "./rentalCompanies/rentalCompaniesCR";
+} from "./rentalCompanies/rentalCompaniesCRUD";
 import {
   getInsurances,
   createInsurance,
@@ -95,7 +96,11 @@ router.get("/apis/vehicles", getNewVehicles);
 router.post("/apis/vehicles", createNewVehicle);
 router.put("/apis/vehicles", updateNewVehicle);
 router.delete("/apis/vehicles", deleteNewVehicle);
-router.post("/apis/vehicles/updateImage", upload.single("image"), updateNewVehicleImage);
+router.post(
+  "/apis/vehicles/updateImage",
+  upload.single("vehicleImage"),
+  updateNewVehicleImage
+);
 
 /***************************
  * VehicleType APIs
@@ -114,6 +119,7 @@ router.post("/apis/locations", createLocation);
  ***************************/
 router.get("/apis/rentalCompanies", getRentalCompanies);
 router.post("/apis/rentalCompanies", createRentalCompany);
+router.put("/apis/rentalCompanies", editRentalCompany);
 router.delete("/apis/rentalCompanies", deleteRentalCompany);
 
 /***************************

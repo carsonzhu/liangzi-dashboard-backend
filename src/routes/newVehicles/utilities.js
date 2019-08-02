@@ -61,7 +61,6 @@ export const createNewVehicleAsync = async ({
   seats = 0,
   rentalCompanyId = "",
   vehicleMake = {},
-  vehicleImage = "",
   vehicleNotes = {},
   insuranceIds = [""]
 }) => {
@@ -78,7 +77,7 @@ export const createNewVehicleAsync = async ({
     seats,
     rentalCompanyId,
     vehicleMake,
-    vehicleImage,
+    vehicleImage: "",
     vehicleNotes,
     insuranceIds,
     vehicleStatus: AVAILABLE

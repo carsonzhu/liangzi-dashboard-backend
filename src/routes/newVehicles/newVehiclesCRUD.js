@@ -16,7 +16,7 @@ export const updateNewVehicleImage = async (req, res) => {
   try {
     const userType = req.userType;
     const rentalCompanyId = req.rentalCompanyId;
-    const vehicleId = req.body.vehicleId;
+    const { vehicleId } = req.body;
 
     if (!req.file) {
       return res.status(400).json({

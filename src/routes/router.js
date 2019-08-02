@@ -98,7 +98,7 @@ router.put("/apis/vehicles", updateNewVehicle);
 router.delete("/apis/vehicles", deleteNewVehicle);
 router.post(
   "/apis/vehicles/updateImage",
-  upload.single("vehicleImage"),
+  upload.single("file"),
   updateNewVehicleImage
 );
 

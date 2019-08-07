@@ -173,6 +173,7 @@ export const updateNewVehicle = async (req, res) => {
   try {
     const adminId = req.userId;
     const userType = req.userType;
+    const rentalCompanyId = req.rentalCompanyId;
 
     const { vehicleId, fieldToUpdate } = req.body;
 
@@ -213,7 +214,7 @@ export const updateNewVehicle = async (req, res) => {
     }
 
     await updateNewVehicleAsync({
-      adminId,
+      rentalCompanyId,
       vehicleId,
       fieldToUpdate,
       isSuper: userType === SUPER_ADMIN

@@ -134,7 +134,7 @@ router.delete("/apis/insurances", removeInsurance);
 /***************************
  * Orders APIs
  ***************************/
-router.get("/apis/orders", getorders);
+router.get("/apis/orders", getOrders);
 // router.post("/apis/orders", createOrder);
 // router.put("/apis/orders", editOrder);
 // router.delete("/apis/orders", removeOrder);

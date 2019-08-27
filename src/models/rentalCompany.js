@@ -21,7 +21,6 @@ const RentalCompanySchema = new Schema({
   },
   image: {
     type: String,
-    validator: validateUrl,
     unique: true
   },
   rating: {
@@ -39,6 +38,12 @@ const RentalCompanySchema = new Schema({
     type: String,
     enum: [AVAILABLE, UNAVAILABLE],
     required: true
+  },
+  companyRepName: {
+    type: String
+  },
+  companyPhoneNumber: {
+    type: String
   }
 });
 

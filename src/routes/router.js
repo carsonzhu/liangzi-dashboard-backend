@@ -42,6 +42,7 @@ import {
   editInsurance,
   removeInsurance
 } from "./insurances/insurancesCRUD";
+import { getOrders } from "./orders/ordersCRUD.js";
 
 import { registerWithEmail } from "./authentication/email";
 import { login } from "./authentication/common";
@@ -129,6 +130,14 @@ router.get("/apis/insurances", getInsurances);
 router.post("/apis/insurances", createInsurance);
 router.put("/apis/insurances", editInsurance);
 router.delete("/apis/insurances", removeInsurance);
+
+/***************************
+ * Orders APIs
+ ***************************/
+router.get("/apis/orders", getorders);
+// router.post("/apis/orders", createOrder);
+// router.put("/apis/orders", editOrder);
+// router.delete("/apis/orders", removeOrder);
 
 router.all("*", function(req, res) {
   res.status(404).json({

@@ -145,6 +145,10 @@ const NewVehicleSchema = new Schema({
     data: Buffer,
     contentType: String
   },
+  vehicleImageStr: {
+    type: String,
+    required: true
+  },
   vehicleNotes: {
     type: mongoose.Schema.Types.Mixed,
     validator: localeObjectValidation,

@@ -45,7 +45,16 @@ export const getRentalCompanies = async (req, res) => {
 
 export const createRentalCompany = async (req, res) => {
   try {
-    const { name, address, image, rating, perks, locationAlias } = req.body;
+    const {
+      name,
+      address,
+      image,
+      rating,
+      perks,
+      locationAlias,
+      companyRepName,
+      companyPhoneNumber
+    } = req.body;
 
     if (!name || !address) {
       return res.status(400).json({
@@ -60,7 +69,9 @@ export const createRentalCompany = async (req, res) => {
       image,
       rating,
       perks,
-      locationAlias
+      locationAlias,
+      companyRepName,
+      companyPhoneNumber
     });
 
     return res.status(200).json({
@@ -107,7 +118,9 @@ export const editRentalCompany = async (req, res) => {
       "rating",
       "perks",
       "locationAlias",
-      "rentalCompanyStatus"
+      "rentalCompanyStatus",
+      "companyRepName",
+      "companyPhoneNumber"
     ];
 
     for (let key in fieldToUpdate) {

@@ -105,6 +105,17 @@ export const updateNewVehicleAsync = ({
             });
           }
 
+          // Display rate (what users see) and rate (what company descides)
+          // 1) Display rate is for superAdmin only and
+          // 2) If rate is being updated, then the display rate is also being updated
+          // with the same ratio
+
+          if (vehicle.dailyRate !== fieldToUpdate.dailyRate) {
+            const ratio = fieldToUpdate.dailyRate / vehicle.dailyRate;
+
+            fieldToUpdate.dailyRateDisplay = vehicle.dailyRateDisplay * ratio;
+          }
+
           return NewVehicleModel.updateOne({ _id: vehicleId }, fieldToUpdate);
         })
         .then(resolve)

@@ -146,8 +146,8 @@ const NewVehicleSchema = new Schema({
     contentType: String
   },
   vehicleImageStr: {
-    type: String,
-    required: true
+    type: String
+    // required: true
   },
   vehicleNotes: {
     type: mongoose.Schema.Types.Mixed,

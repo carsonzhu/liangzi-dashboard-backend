@@ -2,12 +2,12 @@
 
 import OrderModel from "../../models/orders";
 
-export const getOrdersAsync = ({ isSuper }) => {
-  //   if (isSuper) {
-  //     return OrderModel.find();
-  //   }
-
-  return OrderModel.find();
+export const getOrdersAsync = ({ isSuper, rentalCompanyId }) => {
+  if (isSuper) {
+    return OrderModel.find();
+  } else {
+    return OrderModel.find({ pickupLocationId: rentalCompanyId });
+  }
 };
 
 export const createOrderAsync = ({}) => {

@@ -13,10 +13,11 @@ import { SUPER_ADMIN } from "../../utilities/constants";
 export const getOrders = async (req, res) => {
   try {
     const userType = req.userType;
-    // const rentalCompanyId = req.rentalCompanyId;
+    const rentalCompanyId = req.rentalCompanyId;
 
     const orders = await getOrdersAsync({
-      isSuper: userType === SUPER_ADMIN
+      isSuper: userType === SUPER_ADMIN,
+      rentalCompanyId
     });
 
     return res.status(200).json({

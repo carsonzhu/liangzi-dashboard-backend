@@ -1,12 +1,49 @@
 "use strict";
 
 import OrderModel from "../../models/orders";
+import DriverModel from "../../models/driver";
+import UserModel from "../../models/user";
 
-export const getOrdersAsync = ({ isSuper, rentalCompanyId }) => {
-  if (isSuper) {
-    return OrderModel.find();
-  } else {
-    return OrderModel.find({ pickupLocationId: rentalCompanyId });
+export const getOrdersAsync = async ({ isSuper, rentalCompanyId }) => {
+  try {
+    const orders = await (isSuper
+      ? OrderModel.find()
+      : OrderModel.find({ pickupLocationId: rentalCompanyId }));
+
+    const driverPromises = orders.map(order =>
+      DriverModel.find({ _id: order.driverId })
+    );
+
+    const userPromises = orders.map(order =>
+      UserModel.find({ _id: order.userId })
+    );
+
+    const drivers = await Promise.all(driverPromises);
+    const users = await Promise.all(userPromises);
+
+    const resultedOrder = orders.reduce((accum, curr, ind) => {
+      const order = {};
+      order._id = curr._id;
+      order.driverId = curr.driverId;
+      order.vehicleId = curr.vehicleId;
+      order.insuranceId = curr.insuranceId;
+      order.amount = curr.amount;
+      order.currency = curr.currency;
+      order.pickTime = curr.pickTime;
+      order.returnTime = curr.returnTime;
+      order.paymentMethod = curr.paymentMethod;
+      order.amountPaid = curr.amountPaid;
+      order.Driver = drivers[ind];
+      order.User = users[ind];
+
+      accum.push(order);
+
+      return accum;
+    }, []);
+
+    return Promise.resolve(resultedOrder);
+  } catch (err) {
+    return Promise.reject(err);
   }
 };
 

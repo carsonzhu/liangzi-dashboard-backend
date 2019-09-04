@@ -11,11 +11,11 @@ export const getOrdersAsync = async ({ isSuper, rentalCompanyId }) => {
       : OrderModel.find({ pickupLocationId: rentalCompanyId }));
 
     const driverPromises = orders.map(order =>
-      DriverModel.find({ _id: order.driverId })
+      DriverModel.findOne({ _id: order.driverId })
     );
 
     const userPromises = orders.map(order =>
-      UserModel.find({ _id: order.userId })
+      UserModel.findOne({ _id: order.userId }, { email: 1, phoneNumber: 1 })
     );
 
     const drivers = await Promise.all(driverPromises);

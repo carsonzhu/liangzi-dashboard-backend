@@ -1,8 +1,9 @@
 "use strict";
 
 import NewVehicleModel from "../../models/newVehicle";
-
+import base64 from "file-base64";
 import { AVAILABLE, AUTOMATIC } from "../../utilities/constants";
+import logger from "../../utilities/logger";
 
 export const getNewVehiclesAsync = ({ isSuper = false, rentalCompanyId }) => {
   if (isSuper) {
@@ -18,16 +19,13 @@ export const updateNewVehicleImageAsync = async ({
   rentalCompanyId,
   isSuper = false
 }) => {
+  let buff = new Buffer(file.buffer)
+  let imageStr = buff.toString('base64');
   if (isSuper) {
     let updatedVehicle = await NewVehicleModel.findOneAndUpdate(
       { _id: vehicleId },
       {
-        $set: {
-          vehicleImage: {
-            data: file.buffer,
-            contentType: file.mimetype
-          }
-        }
+        vehicleImageStr: imageStr
       },
       { new: true }
     );
@@ -36,12 +34,7 @@ export const updateNewVehicleImageAsync = async ({
     let updatedVehicle = await NewVehicleModel.findOneAndUpdate(
       { _id: vehicleId, rentalCompanyId: rentalCompanyId },
       {
-        $set: {
-          vehicleImage: {
-            data: file.buffer,
-            contentType: file.mimetype
-          }
-        }
+        vehicleImageStr: imageStr
       },
       { new: true }
     );
@@ -78,6 +71,7 @@ export const createNewVehicleAsync = async ({
     rentalCompanyId,
     vehicleMake,
     vehicleImage: "",
+    vehicleImageStr: "",
     vehicleNotes,
     insuranceIds,
     vehicleStatus: AVAILABLE

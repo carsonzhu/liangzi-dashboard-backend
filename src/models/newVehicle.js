@@ -147,6 +147,9 @@ const NewVehicleSchema = new Schema({
   },
   vehicleImageStr: {
     type: String
+  },
+  vehicleImageStr: {
+    type: String
     // required: true
   },
   vehicleNotes: {
